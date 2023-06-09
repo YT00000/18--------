@@ -1,10 +1,3 @@
-/*
- * @Author: lanchanghai
- * @Date: 2023-06-09 22:32:02
- * @LastEditors: lanchanghai
- * @LastEditTime: 2023-06-09 23:42:33
- * @FilePath: \18--------\DIANCI\Project\USER\src\main.c
- */
 /*********************************************************************************************************************
  * COPYRIGHT NOTICE
  * Copyright (c) 2020,Öð·É¿Æ¼¼

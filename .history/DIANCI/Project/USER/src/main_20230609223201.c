@@ -1,10 +1,3 @@
-/*
- * @Author: lanchanghai
- * @Date: 2023-06-09 22:32:02
- * @LastEditors: lanchanghai
- * @LastEditTime: 2023-06-09 23:42:33
- * @FilePath: \18--------\DIANCI\Project\USER\src\main.c
- */
 /*********************************************************************************************************************
  * COPYRIGHT NOTICE
  * Copyright (c) 2020,逐飞科技
@@ -48,7 +41,7 @@ void main()
 	{ 
 			
 		 // 此处编写需要循环执行的代码
-		shuju_adcb();
+		shuju_adc();
 		
 		 delay_ms(200);	//200ms输出一次采样结果，方便观察
 		OLED_Refresh();
