@@ -3,5 +3,11 @@
         {
             "path": "DIANCI"
         }
-    ]
+    ],
+    "settings": {
+        "files.associations": {
+            "headfile.h": "c",
+            "pid.h": "c"
+        }
+    }
 }

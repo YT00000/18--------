@@ -1,6 +1,6 @@
 #ifndef _PID_H
 #define _PID_H
-
+#include "headfile.h"
 
 typedef struct
 {
@@ -44,14 +44,15 @@ typedef struct
 	  
 }PIDR_Type_Def;
 
-
+extern PIDL_Type_Def  pid_LL;
+extern PIDR_Type_Def  pid_RR;
 float constrain_float(float amt, float low, float high);
 void PIDL_Init(PIDL_Type_Def *PIDL);
 void PIDR_Init(PIDR_Type_Def *PIDR);
-float PIDL_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL);
-float PIDR_Loc(float SetValue,float ActualValue,PIDR_Type_Def *PIDR);
-float PIDL_Inc(float SetValue, float ActualValue,PIDL_Type_Def *PIDL);
-float PIDR_Inc(float SetValue, float ActualValue, PIDR_Type_Def *PIDR);
+float PIDL_Inc(float error_L, PIDL_Type_Def *PIDL);
+float PIDR_Inc(float error_R, PIDR_Type_Def *PIDR);
+float PIDR_Loc(float error_R,PIDR_Type_Def *PIDR);
+float PIDL_Loc(float error_L,PIDL_Type_Def *PIDL);
 
 #endif
 

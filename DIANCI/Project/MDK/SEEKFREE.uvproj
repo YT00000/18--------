@@ -272,7 +272,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\src;..\..\..\DIANCI</IncludePath>
+              <IncludePath>..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\src;..\..\..\DIANCI;..\..\..\..\18--------</IncludePath>
             </VariousControls>
           </C251>
           <Ax51>

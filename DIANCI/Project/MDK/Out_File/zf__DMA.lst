@@ -1,11 +1,12 @@
-C251 COMPILER V5.60.0,  zf__DMA                                                            09/06/23  13:14:10  PAGE 1   
+C251 COMPILER V5.60.0,  zf__DMA                                                            11/06/23  21:41:47  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf__DMA
 OBJECT MODULE PLACED IN .\Out_File\zf__DMA.obj
 COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\seekfree_libraries\zf__DMA.c XSMALL WARNINGLEVEL(3) BR
                     -OWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\
-                    -USER\inc;..\USER\src;..\..\..\DIANCI) DEBUG PRINT(.\Out_File\zf__DMA.lst) TABS(2) OBJECT(.\Out_File\zf__DMA.obj) 
+                    -USER\inc;..\USER\src;..\..\..\DIANCI;..\..\..\..\18--------) DEBUG PRINT(.\Out_File\zf__DMA.lst) TABS(2) OBJECT(.\Out_Fi
+                    -le\zf__DMA.obj) 
 
 stmt  level    source
 
@@ -65,9 +66,9 @@ stmt  level    source
    52   1          DMA_ADC_CFG |= 0x80;    //bit7 1:Enable Interrupt
    53   1        else
    54   1          DMA_ADC_CFG &= ~0x80;   //bit7 0:Disable Interrupt
-   55   1        return SUCCESS;
-C251 COMPILER V5.60.0,  zf__DMA                                                            09/06/23  13:14:10  PAGE 2   
+C251 COMPILER V5.60.0,  zf__DMA                                                            11/06/23  21:41:47  PAGE 2   
 
+   55   1        return SUCCESS;
    56   1      }
    57          
    58          

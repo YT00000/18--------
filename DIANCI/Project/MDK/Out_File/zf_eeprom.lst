@@ -1,11 +1,12 @@
-C251 COMPILER V5.60.0,  zf_eeprom                                                          09/06/23  13:14:10  PAGE 1   
+C251 COMPILER V5.60.0,  zf_eeprom                                                          11/06/23  21:41:47  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_eeprom
 OBJECT MODULE PLACED IN .\Out_File\zf_eeprom.obj
 COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\seekfree_libraries\zf_eeprom.c XSMALL WARNINGLEVEL(3) 
                     -BROWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;.
-                    -.\USER\inc;..\USER\src;..\..\..\DIANCI) DEBUG PRINT(.\Out_File\zf_eeprom.lst) TABS(2) OBJECT(.\Out_File\zf_eeprom.obj) 
+                    -.\USER\inc;..\USER\src;..\..\..\DIANCI;..\..\..\..\18--------) DEBUG PRINT(.\Out_File\zf_eeprom.lst) TABS(2) OBJECT(.\Ou
+                    -t_File\zf_eeprom.obj) 
 
 stmt  level    source
 
@@ -65,9 +66,9 @@ stmt  level    source
    49          //  @return     void
    50          //  Sample usage:           
    51          //-------------------------------------------------------------------------------------------------------
-             -------------
-C251 COMPILER V5.60.0,  zf_eeprom                                                          09/06/23  13:14:10  PAGE 2   
+C251 COMPILER V5.60.0,  zf_eeprom                                                          11/06/23  21:41:47  PAGE 2   
 
+             -------------
    52          void iap_init(void)
    53          {
    54   1        IAP_CONTR |= 1<<7;    //使能EEPROM操作
@@ -133,9 +134,9 @@ stmt  level    source
              -------------
   107          void iap_read_bytes(uint16 addr, uint8 *buf, uint16 len)
   108          {
-  109   1        IAP_CMD = 1;        //设置 IAP 读命令 
-C251 COMPILER V5.60.0,  zf_eeprom                                                          09/06/23  13:14:10  PAGE 3   
+C251 COMPILER V5.60.0,  zf_eeprom                                                          11/06/23  21:41:47  PAGE 3   
 
+  109   1        IAP_CMD = 1;        //设置 IAP 读命令 
   110   1      
   111   1        while(len--)
   112   1        {
@@ -201,9 +202,9 @@ stmt  level    source
   168          
   169          //-------------------------------------------------------------------------------------------------------
              -------------
-  170          //  @brief      扩展EEPROM写多个字节(无需擦除)
-C251 COMPILER V5.60.0,  zf_eeprom                                                          09/06/23  13:14:10  PAGE 4   
+C251 COMPILER V5.60.0,  zf_eeprom                                                          11/06/23  21:41:47  PAGE 4   
 
+  170          //  @brief      扩展EEPROM写多个字节(无需擦除)
   171          //  @param      addr      需要写的eeprom地址
   172          //  @param      *buf      需要写的数据地址
   173          //  @param      len       需要写的数据长度

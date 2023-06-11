@@ -1,5 +1,7 @@
-#include "headfile.h"
+#include "PID.h"
 
+PIDL_Type_Def  pid_LL;
+PIDR_Type_Def  pid_RR;
 /*************************************************************************
  *  函数名称：float constrain_float(float amt, float low, float high)
  *  功能说明：限幅函数
@@ -67,9 +69,9 @@ void PIDR_Init(PIDR_Type_Def *PIDR)
             PID ----------- PID数据结构
 返 回 值 ： PIDL->out -------- 输出
 *************************************************/
-float PIDL_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
+float PIDL_Loc(float error_L,PIDL_Type_Def *PIDL)
 {
-	      PIDL->error = SetValue - ActualValue;                                           //现在误差
+	      PIDL->error = error_L;                                           //现在误差
 	      PIDL->integrator += PIDL->error;                                                //误差累积	     
 	      PIDL->integrator = PIDL->integrator > PIDL->limit?PIDL->limit:PIDL->integrator; //积分限幅
 	      PIDL->last_derivative = PIDL->error - PIDL->last_error;
@@ -91,9 +93,9 @@ float PIDL_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
 	
 	
 }
-float PIDR_Loc(float SetValue,float ActualValue,PIDR_Type_Def *PIDR)
+float PIDR_Loc(float error_R,PIDR_Type_Def *PIDR)
 {
-	      PIDR->error = SetValue - ActualValue;                                           //现在误差
+	      PIDR->error = error_R;                                           //现在误差
 	      PIDR->integrator += PIDR->error;                                                //误差累积	     
 	      PIDR->integrator = PIDR->integrator > PIDR->limit?PIDR->limit:PIDR->integrator; //积分限幅
 	      PIDR->last_derivative = PIDR->error - PIDR->last_error;
@@ -124,11 +126,11 @@ float PIDR_Loc(float SetValue,float ActualValue,PIDR_Type_Def *PIDR)
             PID ----------- PID数据结构
 返 回 值 ： PIDL->out -------- 本次PID增量(+/-)
 *************************************************/
-float PIDL_Inc(float SetValue, float ActualValue, PIDL_Type_Def *PIDL)
+float PIDL_Inc(float error_L, PIDL_Type_Def *PIDL)
 {
     
  
-    PIDL->error = SetValue - ActualValue;                                  //计算当前偏差  
+    PIDL->error = error_L;                                  //计算当前偏差  
 	  PIDL->last_derivative = PIDL->error - PIDL->last_error;
     PIDL->out_p = PIDL->Kp * PIDL->last_derivative;
     PIDL->out_i = PIDL->Ki * PIDL->error;
@@ -137,24 +139,16 @@ float PIDL_Inc(float SetValue, float ActualValue, PIDL_Type_Def *PIDL)
 	
     PIDL->last_last_error = PIDL->last_error;
     PIDL->last_error =PIDL->error;
-
-    if(PIDL->out > motor_Max)
-    {
-      PIDL->out = motor_Max;
-    }
-    else if(PIDL->out < motor_Min)
-    {
-      PIDL->out = motor_Min;
-    }                                           //限幅
+    //在motor中PID调用时进行了限幅         
 
     return PIDL->out;
 }
 
-float PIDR_Inc(float SetValue, float ActualValue, PIDR_Type_Def *PIDR)
+float PIDR_Inc(float error_R, PIDR_Type_Def *PIDR)
 {
     
  
-    PIDR->error = SetValue - ActualValue;                                  //计算当前偏差  
+    PIDR->error = error_R;                                  //计算当前偏差  
 	  PIDR->last_derivative = PIDR->error - PIDR->last_error;
     PIDR->out_p = PIDR->Kp * PIDR->last_derivative;
     PIDR->out_i = PIDR->Ki * PIDR->error;
@@ -164,14 +158,7 @@ float PIDR_Inc(float SetValue, float ActualValue, PIDR_Type_Def *PIDR)
     PIDR->last_last_error = PIDR->last_error;
     PIDR->last_error =PIDR->error;
 
-    if(PIDR->out > motor_Max)
-    {
-      PIDR->out = motor_Max;
-    }
-    else if(PIDR->out < motor_Min)
-    {
-      PIDR->out = motor_Min;
-    }                                           //限幅
+  //在motor中PID调用时进行了限幅 
 
     return PIDR->out;
 }

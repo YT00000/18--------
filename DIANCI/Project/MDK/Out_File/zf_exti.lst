@@ -1,11 +1,12 @@
-C251 COMPILER V5.60.0,  zf_exti                                                            09/06/23  13:14:10  PAGE 1   
+C251 COMPILER V5.60.0,  zf_exti                                                            11/06/23  21:41:47  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE zf_exti
 OBJECT MODULE PLACED IN .\Out_File\zf_exti.obj
 COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\..\Libraries\seekfree_libraries\zf_exti.c XSMALL WARNINGLEVEL(3) BR
                     -OWSE INCDIR(..\..\Libraries\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\
-                    -USER\inc;..\USER\src;..\..\..\DIANCI) DEBUG PRINT(.\Out_File\zf_exti.lst) TABS(2) OBJECT(.\Out_File\zf_exti.obj) 
+                    -USER\inc;..\USER\src;..\..\..\DIANCI;..\..\..\..\18--------) DEBUG PRINT(.\Out_File\zf_exti.lst) TABS(2) OBJECT(.\Out_Fi
+                    -le\zf_exti.obj) 
 
 stmt  level    source
 
@@ -65,9 +66,9 @@ stmt  level    source
    50   1        {
    51   2          INTCLKO |= 1<<5;  //使能INT3中断
    52   2        }
-   53   1        
-C251 COMPILER V5.60.0,  zf_exti                                                            09/06/23  13:14:10  PAGE 2   
+C251 COMPILER V5.60.0,  zf_exti                                                            11/06/23  21:41:47  PAGE 2   
 
+   53   1        
    54   1        if(INT4_P30 == int_n)
    55   1        {
    56   2          INTCLKO |= 1<<6;  //使能INT4中断

@@ -19,7 +19,6 @@
 //ADCIF：ADC_DMA 中断请求标志位，当 ADC_DMA 完成扫描所有使能的 ADC 通道后后，硬件自动将
 //ADCIF 置 1，若使能 ADC_DMA 中断则进入中断服务程序。标志位需软件清零
 #include "headfile.h"
-int duty;
 int f=0;
 //UART1中断
 void UART1_Isr() interrupt 4
@@ -113,19 +112,19 @@ void UART4_Isr() interrupt 18
 #define LED P52
 void INT0_Isr() interrupt 0
 {
-	do{
-		delay_ms(10);
-	}while(P32==0);
-	if(P32==1){
-	 if(duty >= 750||f==1)
-		{
-			f=1;
-			duty -=50 ;
-			if(duty<=0) f=0;
-		}
-		else duty += 50;
+//	do{
+//		delay_ms(10);
+//	}while(P32==0);
+//	if(P32==1){
+//	 if(duty >= 750||f==1)
+//		{
+//			f=1;
+//			duty -=50 ;
+//			if(duty<=0) f=0;
+//		}
+//		else duty += 50;
 	
-	}
+//	}
 	INT0_CLEAR_FLAG;  //清除中断标志
 		
 }
