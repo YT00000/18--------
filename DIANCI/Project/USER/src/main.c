@@ -33,27 +33,28 @@
  * 在board_init中,已经将P54引脚设置为复位
  * 如果需要使用P54引脚,可以在board.c文件中的board_init()函数中删除SET_P54_RESRT即可
  */
-void main()
-{
-	board_init();			// 初始化寄存器,勿删除此句代码。
-//电机初始化
-     motor_init();
-//编码器初始化
-    encoder_Init();
-
-
+ void main()
+ {
+ 	board_init();			// 初始化寄存器,勿删除此句代码。
+ 	Use_adc_Init();
+ 	DMA_config();
+ 	EnableGlobalIRQ();
 	
-	EnableGlobalIRQ();  //打开中断
-
+ 	OLED_Init();				//初始化OLED
+ 	OLED_Clear();
+ 	OLED_DisPlay_On();					//初始化LED
  
-  while(1)
-	{ 
+   while(1)
+ 	{ 
 			
-		 // 此处编写需要循环执行的代码
-	
+ 		 // 此处编写需要循环执行的代码
+ 		shuju_adc();
 		
-  }
-}
+ 		 delay_ms(200);	//200ms输出一次采样结果，方便观察
+ 		OLED_Refresh();
+		
+   }
+ }
 
    
 

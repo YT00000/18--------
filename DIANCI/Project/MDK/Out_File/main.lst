@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  main                                                               11/06/23  21:41:49  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               18/06/23  13:19:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
 OBJECT MODULE PLACED IN .\Out_File\main.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\USER\src\main.c XSMALL WARNINGLEVEL(3) BROWSE INCDIR(..\..\Librarie
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\USER\src\main.c XSMALL WARNINGLEVEL(0) BROWSE INCDIR(..\..\Librarie
                     -s\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\src;..\..
                     -\..\DIANCI;..\..\..\..\18--------) DEBUG PRINT(.\Out_File\main.lst) TABS(2) OBJECT(.\Out_File\main.obj) 
 
@@ -46,95 +46,95 @@ stmt  level    source
    33           * 在board_init中,已经将P54引脚设置为复位
    34           * 如果需要使用P54引脚,可以在board.c文件中的board_init()函数中删除SET_P54_RESRT即可
    35           */
-   36          void main()
-   37          {
+   36           void main()
+   37           {
    38   1        board_init();     // 初始化寄存器,勿删除此句代码。
-   39   1      //电机初始化
-   40   1           motor_init();
-   41   1      //编码器初始化
-   42   1          encoder_Init();
-   43   1      
-   44   1      
-   45   1        
-   46   1        EnableGlobalIRQ();  //打开中断
-   47   1      
-   48   1       
-   49   1        while(1)
-   50   1        { 
-   51   2            
-   52   2           // 此处编写需要循环执行的代码
-   53   2        
-   54   2          
-   55   2        }
-C251 COMPILER V5.60.0,  main                                                               11/06/23  21:41:49  PAGE 2   
+   39   1        Use_adc_Init();
+   40   1        DMA_config();
+   41   1        EnableGlobalIRQ();
+   42   1        
+   43   1        OLED_Init();        //初始化OLED
+   44   1        OLED_Clear();
+   45   1        OLED_DisPlay_On();          //初始化LED
+   46   1       
+   47   1         while(1)
+   48   1        { 
+   49   2            
+   50   2           // 此处编写需要循环执行的代码
+   51   2          shuju_adc();
+   52   2          
+   53   2           delay_ms(200); //200ms输出一次采样结果，方便观察
+   54   2          OLED_Refresh();
+   55   2          
+C251 COMPILER V5.60.0,  main                                                               18/06/23  13:19:29  PAGE 2   
 
-   56   1      }
-   57          
-   58             
-   59          
+   56   2         }
+   57   1       }
+   58          
+   59             
    60          
-   61          //Use_adc_Init();
-   62          //  DMA_config();
-   63          //  EnableGlobalIRQ();   
-   64          //    while(1)
-   65          //  {
-   66          //    uint8 i,n;
-   67          //     // 此处编写需要循环执行的代码
-   68          //     delay_ms(200); //200ms输出一次采样结果，方便观察
-   69          //    
-   70          //    if(DmaADCFlag)  //判断ADC DMA采样是否完成
-   71          //    {
-   72          //      DmaADCFlag = 0; //清除完成标志
-   73          //      for(i=0; i<ADC_CH; i++)     //打印每个设置通道的采样结果
-   74          //      {
-   75          //        printf("%d:",i);
-   76          //        for(n=0; n<ADC_DATA; n++)   //打印当前通道的采样数据
-   77          //        {
-   78          //          printf("%02d ",DmaAdBuffer[i][n]);  //第1组数据,...,第n组数据,AD通道,平均余数,平均值
-   79          //        }
-   80          //        
-   81          //        printf("\r\n"); //串口输出回车换行符
-   82          //      }
-   83          //      printf("\r\n");     //串口输出回车换行符
-   84          //      DMA_ADC_TRIG();   //重新触发启动下一次转换
-   85          //    }
-   86          //    
-   87          //    }
-   88          
+   61          
+   62          //Use_adc_Init();
+   63          //  DMA_config();
+   64          //  EnableGlobalIRQ();   
+   65          //    while(1)
+   66          //  {
+   67          //    uint8 i,n;
+   68          //     // 此处编写需要循环执行的代码
+   69          //     delay_ms(200); //200ms输出一次采样结果，方便观察
+   70          //    
+   71          //    if(DmaADCFlag)  //判断ADC DMA采样是否完成
+   72          //    {
+   73          //      DmaADCFlag = 0; //清除完成标志
+   74          //      for(i=0; i<ADC_CH; i++)     //打印每个设置通道的采样结果
+   75          //      {
+   76          //        printf("%d:",i);
+   77          //        for(n=0; n<ADC_DATA; n++)   //打印当前通道的采样数据
+   78          //        {
+   79          //          printf("%02d ",DmaAdBuffer[i][n]);  //第1组数据,...,第n组数据,AD通道,平均余数,平均值
+   80          //        }
+   81          //        
+   82          //        printf("\r\n"); //串口输出回车换行符
+   83          //      }
+   84          //      printf("\r\n");     //串口输出回车换行符
+   85          //      DMA_ADC_TRIG();   //重新触发启动下一次转换
+   86          //    }
+   87          //    
+   88          //    }
    89          
    90          
-   91             //   gpio_mode(INT0_P32,GPI_IMPEDANCE);
-   92            //   exit_init(INT0_P32,FALLING_EDGE);   //初始化P32 作为外部中断引脚
-   93            //     motor_init();
-   94            //     pwm_init(PWMB_CH3_P22 , 50,3390 );     //初始化PWMA  使用引脚P7.4  输出PWM频率50HZ   占空比为百分
+   91          
+   92             //   gpio_mode(INT0_P32,GPI_IMPEDANCE);
+   93            //   exit_init(INT0_P32,FALLING_EDGE);   //初始化P32 作为外部中断引脚
+   94            //     motor_init();
+   95            //     pwm_init(PWMB_CH3_P22 , 50,3390 );     //初始化PWMA  使用引脚P7.4  输出PWM频率50HZ   占空比为百分
              -之 pwm_duty / PWM_DUTY_MAX * 100
-   95          
-   96          /****************************test DMA_ADC*********************************/
-   97          // void main()
-   98          // {
-   99          //  board_init();     // 初始化寄存器,勿删除此句代码。
-  100          //  Use_adc_Init();
-  101          //  DMA_config();
-  102          //  EnableGlobalIRQ();
-  103            
-  104          //  OLED_Init();        //初始化OLED
-  105          //  OLED_Clear();
-  106          //  OLED_DisPlay_On();          //初始化LED
-  107           
-  108          //   while(1)
-  109          //  { 
-  110                
-  111          //     // 此处编写需要循环执行的代码
-  112          //    shuju_adc();
-  113              
-  114          //     delay_ms(200); //200ms输出一次采样结果，方便观察
-  115          //    OLED_Refresh();
-  116              
-  117          //   }
-  118          // }
-  119          
+   96          
+   97          /****************************test DMA_ADC*********************************/
+   98          // void main()
+   99          // {
+  100          //  board_init();     // 初始化寄存器,勿删除此句代码。
+  101          //  Use_adc_Init();
+  102          //  DMA_config();
+  103          //  EnableGlobalIRQ();
+  104            
+  105          //  OLED_Init();        //初始化OLED
+  106          //  OLED_Clear();
+  107          //  OLED_DisPlay_On();          //初始化LED
+  108           
+  109          //   while(1)
+  110          //  { 
+  111                
+  112          //     // 此处编写需要循环执行的代码
+  113          //    shuju_adc();
+  114              
+  115          //     delay_ms(200); //200ms输出一次采样结果，方便观察
+  116          //    OLED_Refresh();
+  117              
+  118          //   }
+  119          // }
   120          
-C251 COMPILER V5.60.0,  main                                                               11/06/23  21:41:49  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               18/06/23  13:19:29  PAGE 3   
 
   121          
   122          
@@ -142,11 +142,12 @@ stmt  level    source
   124          
   125          
   126          
+  127          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =        14     ------
+  code size            =        36     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

@@ -61,62 +61,62 @@ void PIDR_Init(PIDR_Type_Def *PIDR)
 }
 
 //pwm=Kp*e(k)+Ki*∑e(k)+Kd[e（k）-e(k-1)]
-/************************************************
-函数名称 ： PID_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
-功    能 ： 位置式PID
-参    数 ： SetValue ------ 设置值(期望值)
-            ActualValue --- 实际值(反馈值)
-            PID ----------- PID数据结构
-返 回 值 ： PIDL->out -------- 输出
-*************************************************/
-float PIDL_Loc(float error_L,PIDL_Type_Def *PIDL)
-{
-	      PIDL->error = error_L;                                           //现在误差
-	      PIDL->integrator += PIDL->error;                                                //误差累积	     
-	      PIDL->integrator = PIDL->integrator > PIDL->limit?PIDL->limit:PIDL->integrator; //积分限幅
-	      PIDL->last_derivative = PIDL->error - PIDL->last_error;
-				PIDL->out_p = PIDL->Kp *  PIDL->error;                                          //Kp输出
-	      PIDL->out_i = PIDL->Ki *  PIDL->integrator;                                     //Ki输出
-	      PIDL->out_d = PIDL->Kd *  PIDL->last_derivative;                                //Kd输出
-	      PIDL->last_error = PIDL->error;                                                 //保存上一次偏差
-	      PIDL->out =PIDL->out_p + PIDL->out_i + PIDL->out_d;                             //输出
-	//限制
-	      if(PIDL->out > Servo_max)
-    {
-      PIDL->out =  Servo_max;
-    }
-    else if(PIDL->out< Servo_min)
-    {
-      PIDL->out =  Servo_min;
-    }
-	     return PIDL->out ; 
+// /************************************************
+// 函数名称 ： PID_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
+// 功    能 ： 位置式PID
+// 参    数 ： SetValue ------ 设置值(期望值)
+//             ActualValue --- 实际值(反馈值)
+//             PID ----------- PID数据结构
+// 返 回 值 ： PIDL->out -------- 输出
+// *************************************************/
+// float PIDL_Loc(float error_L,PIDL_Type_Def *PIDL)
+// {
+// 	      PIDL->error = error_L;                                           //现在误差
+// 	      PIDL->integrator += PIDL->error;                                                //误差累积	     
+// 	      PIDL->integrator = PIDL->integrator > PIDL->limit?PIDL->limit:PIDL->integrator; //积分限幅
+// 	      PIDL->last_derivative = PIDL->error - PIDL->last_error;
+// 				PIDL->out_p = PIDL->Kp *  PIDL->error;                                          //Kp输出
+// 	      PIDL->out_i = PIDL->Ki *  PIDL->integrator;                                     //Ki输出
+// 	      PIDL->out_d = PIDL->Kd *  PIDL->last_derivative;                                //Kd输出
+// 	      PIDL->last_error = PIDL->error;                                                 //保存上一次偏差
+// 	      PIDL->out =PIDL->out_p + PIDL->out_i + PIDL->out_d;                             //输出
+// 	//限制
+// 	      if(PIDL->out > Servo_max)
+//     {
+//       PIDL->out =  Servo_max;
+//     }
+//     else if(PIDL->out< Servo_min)
+//     {
+//       PIDL->out =  Servo_min;
+//     }
+// 	     return PIDL->out ; 
 	
 	
-}
-float PIDR_Loc(float error_R,PIDR_Type_Def *PIDR)
-{
-	      PIDR->error = error_R;                                           //现在误差
-	      PIDR->integrator += PIDR->error;                                                //误差累积	     
-	      PIDR->integrator = PIDR->integrator > PIDR->limit?PIDR->limit:PIDR->integrator; //积分限幅
-	      PIDR->last_derivative = PIDR->error - PIDR->last_error;
-				PIDR->out_p = PIDR->Kp *  PIDR->error;                                          //Kp输出
-	      PIDR->out_i = PIDR->Ki *  PIDR->integrator;                                     //Ki输出
-	      PIDR->out_d = PIDR->Kd *  PIDR->last_derivative;                                //Kd输出
-	      PIDR->last_error = PIDR->error;                                                 //保存上一次偏差
-	      PIDR->out =PIDR->out_p + PIDR->out_i + PIDR->out_d;                             //输出
-	//限制
-	      if(PIDR->out > Servo_max)
-    {
-      PIDR->out =  Servo_max;
-    }
-    else if(PIDR->out < Servo_min)
-    {
-      PIDR->out =  Servo_min;
-    }
-	     return PIDR->out ; 
+// }
+// float PIDR_Loc(float error_R,PIDR_Type_Def *PIDR)
+// {
+// 	      PIDR->error = error_R;                                           //现在误差
+// 	      PIDR->integrator += PIDR->error;                                                //误差累积	     
+// 	      PIDR->integrator = PIDR->integrator > PIDR->limit?PIDR->limit:PIDR->integrator; //积分限幅
+// 	      PIDR->last_derivative = PIDR->error - PIDR->last_error;
+// 				PIDR->out_p = PIDR->Kp *  PIDR->error;                                          //Kp输出
+// 	      PIDR->out_i = PIDR->Ki *  PIDR->integrator;                                     //Ki输出
+// 	      PIDR->out_d = PIDR->Kd *  PIDR->last_derivative;                                //Kd输出
+// 	      PIDR->last_error = PIDR->error;                                                 //保存上一次偏差
+// 	      PIDR->out =PIDR->out_p + PIDR->out_i + PIDR->out_d;                             //输出
+// 	//限制
+// 	      if(PIDR->out > Servo_max)
+//     {
+//       PIDR->out =  Servo_max;
+//     }
+//     else if(PIDR->out < Servo_min)
+//     {
+//       PIDR->out =  Servo_min;
+//     }
+// 	     return PIDR->out ; 
 	
 	
-}
+//}
 //pwm+=Kp[e（k）-e(k-1)]+Ki*e(k)+Kd[e(k)-2e(k-1)+e(k-2)]
 /************************************************
 函数名称 ： PID_Inc

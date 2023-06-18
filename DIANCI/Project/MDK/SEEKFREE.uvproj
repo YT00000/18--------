@@ -265,7 +265,7 @@
             <uFlt64>0</uFlt64>
             <Fuzzy>3</Fuzzy>
             <Optim>7</Optim>
-            <wLevel>3</wLevel>
+            <wLevel>0</wLevel>
             <SizSpd>1</SizSpd>
             <AcaOpt>0</AcaOpt>
             <VariousControls>
@@ -695,11 +695,6 @@
               <FilePath>..\USER\src\motor.c</FilePath>
             </File>
             <File>
-              <FileName>PWM.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\src\PWM.c</FilePath>
-            </File>
-            <File>
               <FileName>PID.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\PID.c</FilePath>
@@ -723,6 +718,11 @@
               <FileName>oled.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\src\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>direction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\src\direction.c</FilePath>
             </File>
           </Files>
         </Group>

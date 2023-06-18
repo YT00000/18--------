@@ -1,7 +1,7 @@
 #include "oled.h"
 #include "stdlib.h"
 #include "oledfont.h"  	 
-
+#include "SEEKFREE_PRINTF.h"
 
 uint8 OLED_GRAM[144][8]={0};
 
@@ -417,4 +417,51 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xA6,OLED_CMD);// Disable Inverse Display On (0xa6/a7) 
 	OLED_WR_Byte(0xAF,OLED_CMD);
 	OLED_Clear();
+}
+//-------------------------------------------------------------------------------------------------------------------
+//  @brief      OLED显示浮点数(去除整数部分无效的0)
+//  @param      x			x轴坐标设置0-127
+//  @param      y           y轴坐标设置0-7
+//  @param      dat       	需要显示的变量，数据类型float或double
+//  @param      num         整数位显示长度   最高10位  
+//  @param      pointnum    小数位显示长度   最高6位
+//  @return     void
+//  @since      v1.0
+//  Sample usage:           oled_printf_float(0,0,x,2,3);//显示浮点数   整数显示2位   小数显示三位
+//  @note                   特别注意当发现小数部分显示的值与你写入的值不一样的时候，
+//                          可能是由于浮点数精度丢失问题导致的，这并不是显示函数的问题，
+//                          有关问题的详情，请自行百度学习   浮点数精度丢失问题。
+//                          负数会显示一个 ‘-’号   正数显示一个空格
+//-------------------------------------------------------------------------------------------------------------------
+void oled_printf_float(uint16 x,uint16 y,double dat,uint8 num,uint8 pointnum,uint8 size1)
+{
+    uint8   length;
+	int8    buff[34];
+	int8    start,end,point;
+
+	if(6<pointnum)  pointnum = 6;
+    if(10<num)      num = 10;
+        
+    if(0>dat)   length = zf_sprintf( &buff[0],"%f",dat);//负数
+    else
+    {
+        length = zf_sprintf( &buff[1],"%f",dat);
+        length++;
+    }
+    point = length - 7;         //计算小数点位置
+    start = point - num - 1;    //计算起始位
+    end = point + pointnum + 1; //计算结束位
+    while(0>start)//整数位不够  末尾应该填充空格
+    {
+        buff[end] = ' ';
+        end++;
+        start++;
+    }
+    
+    if(0>dat)   buff[start] = '-';
+    else        buff[start] = ' ';
+    
+    buff[end] = '\0';
+    
+    OLED_ShowString((uint8)x, (uint8)y, (int8 *)buff,size1);	//显示数字
 }

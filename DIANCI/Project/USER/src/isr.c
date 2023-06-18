@@ -187,6 +187,8 @@ void DMA_ADC_ISR_Handler (void) interrupt 48
 	{
 		DMA_ADC_STA &= ~0x01;	//清标志位
 		DmaADCFlag = 1;
+		pooled_data();
+		
 	}
 }
 
@@ -206,6 +208,8 @@ void DMA_ISR_Handler (void) interrupt 13
 	{
 		DMA_ADC_STA &= ~0x01;	//清标志位
 		DmaADCFlag = 1;
+		pooled_data();
+		
 	}
 }
 

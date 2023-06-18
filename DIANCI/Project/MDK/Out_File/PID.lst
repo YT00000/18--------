@@ -1,9 +1,9 @@
-C251 COMPILER V5.60.0,  PID                                                                11/06/23  21:41:49  PAGE 1   
+C251 COMPILER V5.60.0,  PID                                                                18/06/23  13:19:29  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE PID
 OBJECT MODULE PLACED IN .\Out_File\PID.obj
-COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\USER\src\PID.c XSMALL WARNINGLEVEL(3) BROWSE INCDIR(..\..\Libraries
+COMPILER INVOKED BY: D:\Keil_v5\C251\BIN\C251.EXE ..\USER\src\PID.c XSMALL WARNINGLEVEL(0) BROWSE INCDIR(..\..\Libraries
                     -\libraries;..\..\Libraries\seekfree_libraries;..\..\Libraries\seekfree_peripheral;..\CODE;..\USER\inc;..\USER\src;..\..\
                     -..\DIANCI;..\..\..\..\18--------) DEBUG PRINT(.\Out_File\PID.lst) TABS(2) OBJECT(.\Out_File\PID.obj) 
 
@@ -66,7 +66,7 @@ stmt  level    source
    55   1           PIDR->out =0;   //pidÊä³ö
    56   1           PIDR->integrator =0; //»ý·ÖÖµ
    57   1           PIDR->limit =0;//»ý·ÖÏÞ·ù
-C251 COMPILER V5.60.0,  PID                                                                11/06/23  21:41:49  PAGE 2   
+C251 COMPILER V5.60.0,  PID                                                                18/06/23  13:19:29  PAGE 2   
 
    58   1           PIDR->error =0;      //µ±Ç°Æ«²î
    59   1           PIDR->last_error =0; //ÉÏ´ÎÎó²î
@@ -74,68 +74,72 @@ stmt  level    source
    61   1      }
    62          
    63          //pwm=Kp*e(k)+Ki*¡Æe(k)+Kd[e£¨k£©-e(k-1)]
-   64          /************************************************
-   65          º¯ÊýÃû³Æ £º PID_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
-   66          ¹¦    ÄÜ £º Î»ÖÃÊ½PID
-   67          ²Î    Êý £º SetValue ------ ÉèÖÃÖµ(ÆÚÍûÖµ)
-   68                      ActualValue --- Êµ¼ÊÖµ(·´À¡Öµ)
-   69                      PID ----------- PIDÊý¾Ý½á¹¹
-   70          ·µ »Ø Öµ £º PIDL->out -------- Êä³ö
-   71          *************************************************/
-   72          float PIDL_Loc(float error_L,PIDL_Type_Def *PIDL)
-   73          {
-   74   1              PIDL->error = error_L;                                           //ÏÖÔÚÎó²î
-   75   1              PIDL->integrator += PIDL->error;                                                //Îó²îÀÛ»ý       
-   76   1              PIDL->integrator = PIDL->integrator > PIDL->limit?PIDL->limit:PIDL->integrator; //»ý·ÖÏÞ·ù
-   77   1              PIDL->last_derivative = PIDL->error - PIDL->last_error;
-   78   1              PIDL->out_p = PIDL->Kp *  PIDL->error;                                          //KpÊä³ö
-   79   1              PIDL->out_i = PIDL->Ki *  PIDL->integrator;                                     //KiÊä³ö
-   80   1              PIDL->out_d = PIDL->Kd *  PIDL->last_derivative;                                //KdÊä³ö
-   81   1              PIDL->last_error = PIDL->error;                                                 //±£´æÉÏÒ»´ÎÆ«²î
-   82   1              PIDL->out =PIDL->out_p + PIDL->out_i + PIDL->out_d;                             //Êä³ö
-   83   1        //ÏÞÖÆ
-   84   1              if(PIDL->out > Servo_max)
-   85   1          {
-   86   2            PIDL->out =  Servo_max;
-   87   2          }
-   88   1          else if(PIDL->out< Servo_min)
-   89   1          {
-   90   2            PIDL->out =  Servo_min;
-   91   2          }
-   92   1             return PIDL->out ; 
-   93   1        
-   94   1        
-   95   1      }
-   96          float PIDR_Loc(float error_R,PIDR_Type_Def *PIDR)
-   97          {
-   98   1              PIDR->error = error_R;                                           //ÏÖÔÚÎó²î
-   99   1              PIDR->integrator += PIDR->error;                                                //Îó²îÀÛ»ý       
-  100   1              PIDR->integrator = PIDR->integrator > PIDR->limit?PIDR->limit:PIDR->integrator; //»ý·ÖÏÞ·ù
-  101   1              PIDR->last_derivative = PIDR->error - PIDR->last_error;
-  102   1              PIDR->out_p = PIDR->Kp *  PIDR->error;                                          //KpÊä³ö
-  103   1              PIDR->out_i = PIDR->Ki *  PIDR->integrator;                                     //KiÊä³ö
-  104   1              PIDR->out_d = PIDR->Kd *  PIDR->last_derivative;                                //KdÊä³ö
-  105   1              PIDR->last_error = PIDR->error;                                                 //±£´æÉÏÒ»´ÎÆ«²î
-  106   1              PIDR->out =PIDR->out_p + PIDR->out_i + PIDR->out_d;                             //Êä³ö
-  107   1        //ÏÞÖÆ
-  108   1              if(PIDR->out > Servo_max)
-  109   1          {
-  110   2            PIDR->out =  Servo_max;
-  111   2          }
-  112   1          else if(PIDR->out < Servo_min)
-  113   1          {
-  114   2            PIDR->out =  Servo_min;
-  115   2          }
-  116   1             return PIDR->out ; 
-  117   1        
-  118   1        
-  119   1      }
+   64          // /************************************************
+   65          // º¯ÊýÃû³Æ £º PID_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
+   66          // ¹¦    ÄÜ £º Î»ÖÃÊ½PID
+   67          // ²Î    Êý £º SetValue ------ ÉèÖÃÖµ(ÆÚÍûÖµ)
+   68          //             ActualValue --- Êµ¼ÊÖµ(·´À¡Öµ)
+   69          //             PID ----------- PIDÊý¾Ý½á¹¹
+   70          // ·µ »Ø Öµ £º PIDL->out -------- Êä³ö
+   71          // *************************************************/
+   72          // float PIDL_Loc(float error_L,PIDL_Type_Def *PIDL)
+   73          // {
+   74          //        PIDL->error = error_L;                                           //ÏÖÔÚÎó²î
+   75          //        PIDL->integrator += PIDL->error;                                                //Îó²îÀÛ»ý      
+             - 
+   76          //        PIDL->integrator = PIDL->integrator > PIDL->limit?PIDL->limit:PIDL->integrator; //»ý·ÖÏÞ·ù
+   77          //        PIDL->last_derivative = PIDL->error - PIDL->last_error;
+   78          //        PIDL->out_p = PIDL->Kp *  PIDL->error;                                          //KpÊä³ö
+   79          //        PIDL->out_i = PIDL->Ki *  PIDL->integrator;                                     //KiÊä³ö
+   80          //        PIDL->out_d = PIDL->Kd *  PIDL->last_derivative;                                //KdÊä³ö
+   81          //        PIDL->last_error = PIDL->error;                                                 //±£´æÉÏÒ»´ÎÆ«²
+             -î
+   82          //        PIDL->out =PIDL->out_p + PIDL->out_i + PIDL->out_d;                             //Êä³ö
+   83          //  //ÏÞÖÆ
+   84          //        if(PIDL->out > Servo_max)
+   85          //     {
+   86          //       PIDL->out =  Servo_max;
+   87          //     }
+   88          //     else if(PIDL->out< Servo_min)
+   89          //     {
+   90          //       PIDL->out =  Servo_min;
+   91          //     }
+   92          //       return PIDL->out ; 
+   93            
+   94            
+   95          // }
+   96          // float PIDR_Loc(float error_R,PIDR_Type_Def *PIDR)
+   97          // {
+   98          //        PIDR->error = error_R;                                           //ÏÖÔÚÎó²î
+   99          //        PIDR->integrator += PIDR->error;                                                //Îó²îÀÛ»ý      
+             - 
+  100          //        PIDR->integrator = PIDR->integrator > PIDR->limit?PIDR->limit:PIDR->integrator; //»ý·ÖÏÞ·ù
+  101          //        PIDR->last_derivative = PIDR->error - PIDR->last_error;
+  102          //        PIDR->out_p = PIDR->Kp *  PIDR->error;                                          //KpÊä³ö
+  103          //        PIDR->out_i = PIDR->Ki *  PIDR->integrator;                                     //KiÊä³ö
+  104          //        PIDR->out_d = PIDR->Kd *  PIDR->last_derivative;                                //KdÊä³ö
+  105          //        PIDR->last_error = PIDR->error;                                                 //±£´æÉÏÒ»´ÎÆ«²
+             -î
+  106          //        PIDR->out =PIDR->out_p + PIDR->out_i + PIDR->out_d;                             //Êä³ö
+  107          //  //ÏÞÖÆ
+  108          //        if(PIDR->out > Servo_max)
+  109          //     {
+  110          //       PIDR->out =  Servo_max;
+  111          //     }
+  112          //     else if(PIDR->out < Servo_min)
+  113          //     {
+  114          //       PIDR->out =  Servo_min;
+  115          //     }
+  116          //       return PIDR->out ; 
+  117            
+  118            
+  119          //}
+C251 COMPILER V5.60.0,  PID                                                                18/06/23  13:19:29  PAGE 3   
+
   120          //pwm+=Kp[e£¨k£©-e(k-1)]+Ki*e(k)+Kd[e(k)-2e(k-1)+e(k-2)]
   121          /************************************************
   122          º¯ÊýÃû³Æ £º PID_Inc
   123          ¹¦    ÄÜ £º ÔöÁ¿Ê½PID
-C251 COMPILER V5.60.0,  PID                                                                11/06/23  21:41:49  PAGE 3   
-
   124          ²Î    Êý £º SetValue ------ ÉèÖÃÖµ(ÆÚÍûÖµ)
   125                      ActualValue --- Êµ¼ÊÖµ(·´À¡Öµ)
   126                      PID ----------- PIDÊý¾Ý½á¹¹
@@ -194,17 +198,17 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =      1282     ------
+  code size            =       690     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
+C251 COMPILER V5.60.0,  PID                                                                18/06/23  13:19:29  PAGE 4   
+
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
   edata size           =       112          4
   bit size             =    ------     ------
-C251 COMPILER V5.60.0,  PID                                                                11/06/23  21:41:49  PAGE 4   
-
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------

@@ -54,7 +54,7 @@ void OLED_ScrollDisplay(u8 num,u8 space);
 void OLED_WR_BP(u8 x,u8 y);
 void OLED_ShowPicture(u8 x0,u8 y0,u8 x1,u8 y1,u8 BMP[]);
 void OLED_Init(void);
-
+void oled_printf_float(uint16 x,uint16 y,double dat,uint8 num,uint8 pointnum,uint8 size1);
 #endif
 
 

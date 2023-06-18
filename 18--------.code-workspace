@@ -7,7 +7,9 @@
     "settings": {
         "files.associations": {
             "headfile.h": "c",
-            "pid.h": "c"
+            "pid.h": "c",
+            "pwm.h": "c",
+            "seekfree_at24c02.h": "c"
         }
     }
 }
