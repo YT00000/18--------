@@ -7,6 +7,7 @@
  */
 #include "headfile.h"
 
+float poserror=0;   //外环偏差
 //舵机参数
 #define Servos_Middle 3390               // 舵机中值       
 #define Servos_Zmax 3750                 // 舵机左最值       
@@ -83,7 +84,7 @@ void average_value(void)
        average[n] = average[n]/(a-j);
 		    
     }
-     `}
+     }
 		}
 //归一化
 /*
@@ -137,6 +138,14 @@ void prepare_dat(void)
    average_value();//排序完的数组去掉最大最小值求平均值
    normalization();//归一化
 }
+//浮点型的绝对值
+float fabs(float x)
+{
+   if(x>=0) return x;
+	 if(x<0) return -x;
+
+
+}
 //======================================================================
 //函数名称 : cal_poserror
 //功能描述 : 差比和计算误差
@@ -144,14 +153,18 @@ void prepare_dat(void)
 //输出参数 : 
 //返回值   : NONE
 //备注     :  across横电感 vertical竖电感 splayed八字型
-//        (/ 十  十 \)
+//        (/ 十  十 \)   
+// (A*(L-R)+B*(LM-RM))/(A*(L+R)+C*(|LM+RM|))
 //======================================================================
-// void cal_poserror(float a_Ls,float a_La,float a_Lv,float a_Rs,float a_Ra,float a_Rv)
-// {
-//    float cha ,he;
-//    cha = my_sqrt()
-
-// }
+void cal_poserror(float a_Ls,float a_La,float a_Lv,float a_Rs,float a_Ra,float a_Rv)
+{
+   float cha ,he;
+	 float A=1,B=1,C=1,P=1;
+   cha = my_sqrt(A*(a_La - a_Ra)) + my_sqrt(B*(a_Ls - a_Rs));
+	 he = my_sqrt(A*(a_La + a_Ra)) + my_sqrt(C*fabs(a_Ls - a_Rs));
+	 poserror = (cha/he)*P;
+	  
+}
 
 
 
