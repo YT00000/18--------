@@ -8,6 +8,8 @@
 #include "headfile.h"
 
 float poserror=0;   //外环偏差
+int Servo_duty=0;  //转向输出PWM
+DirectPidStruct Direction;
 //舵机参数
 #define Servos_Middle 3390               // 舵机中值       
 #define Servos_Zmax 3750                 // 舵机左最值       
@@ -156,6 +158,7 @@ float fabs(float x)
 //        (/ 十  十 \)   
 // (A*(L-R)+B*(LM-RM))/(A*(L+R)+C*(|LM+RM|))
 //======================================================================
+//若输出量跟舵机打角有偏差需要调整，改变系数A B C P
 void cal_poserror(float a_Ls,float a_La,float a_Lv,float a_Rs,float a_Ra,float a_Rv)
 {
    float cha ,he;
@@ -164,6 +167,55 @@ void cal_poserror(float a_Ls,float a_La,float a_Lv,float a_Rs,float a_Ra,float a
 	 he = my_sqrt(A*(a_La + a_Ra)) + my_sqrt(C*fabs(a_Ls - a_Rs));
 	 poserror = (cha/he)*P;
 	  
+}
+/*******************************************************************************
+* 函数名		：steering_angl
+* 描述			：舵机角度设置
+* 参数			：
+						angl        舵机角度（正：左转  负：右转  360 <= angl <= -400）
+* 返回			:void
+* 编写者		：XY
+* 编写日期	：2021-12-19
+*******************************************************************************/
+void Steering_Angl(int angl)
+{
+	int PWM1_duty;
+	
+		PWM1_duty = Servos_Middle  + angl;						//duty占空比为3390时，舵机居中
+	if(PWM1_duty <= Servos_Ymax)//右转限幅
+		{PWM1_duty = Servos_Ymax;}
+		if(PWM1_duty >= Servos_Zmax)//左转限幅
+		{PWM1_duty = Servos_Zmax;}
+	pwm_init(PWMB_CH3_P22 , 50,PWM1_duty);	//PWMA设置占空比
+	
+	
+}
+
+//根据不同元素判断系数PD的值（Direction），用AD值控制舵机打角
+void Direction_out(void)
+{
+  //进行标志位判断来配置每一个赛道元素的参数值  舵机一半最值为360，误差最大18，PD系数为20
+	//让其近似一比一的关系
+	if(circular_flag ==1)
+	{
+	  Direction.KP=5; 
+		Direction.KD=2;
+	}
+   //转向PD控制
+	 Direction.SumError=Direction.KP*poserror+Direction.KD*(poserror-Direction.PrevError);//电感差比和算出的偏差做增量式PD计算
+	 Direction.PrevError=poserror;
+	 Direction.Pre1_Error[3]= Direction.Pre1_Error[2];
+	 Direction.Pre1_Error[2]= Direction.Pre1_Error[1];
+	 Direction.Pre1_Error[1]= Direction.Pre1_Error[0];
+	 Direction.Pre1_Error[0]=Direction.SumError;
+	//拟合没有改变数值
+	 Direction.Direct_Parameter=Direction.Pre1_Error[0]*0.8+Direction.Pre1_Error[1]*0.1+
+																Direction.Pre1_Error[2]*0.06+Direction.Pre1_Error[3]*0.04 ;//曲线拟合   最小二乘
+   Servo_duty = (int)(Direction.Direct_Parameter);
+	 //转向限制幅度
+	 if(Servo_duty >= 400) Servo_duty = 360;
+	 if(Servo_duty <= -360) Servo_duty -360;
+	  Steering_Angl(Servo_duty);
 }
 
 

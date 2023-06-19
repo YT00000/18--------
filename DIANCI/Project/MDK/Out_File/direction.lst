@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  direction                                                          20/06/23  00:03:59  PAGE 1   
+C251 COMPILER V5.60.0,  direction                                                          20/06/23  03:21:24  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE direction
@@ -19,195 +19,249 @@ stmt  level    source
     8          #include "headfile.h"
     9          
    10          float poserror=0;   //外环偏差
-   11          //舵机参数
-   12          #define Servos_Middle 3390               // 舵机中值       
-   13          #define Servos_Zmax 3750                 // 舵机左最值       
-   14          #define Servos_Ymax 2990                 // 舵机右最值
-   15          //定义ADC的最值
-   16          //因为使用12位精度ADC故 2的12次方=4096
-   17          #define ADC_MAX    4096                  //ADC 12位精度 2的12次方=4096
-   18          #define ADC_MIN     0                    
-   19          
-   20          uint16 DMA_ADC_dat[ADC_CH][(ADC_DATA-4)/2];   //将DMA中ADC数据高低位合并(每一个通道转换�
+   11          int Servo_duty=0;  //转向输出PWM
+   12          DirectPidStruct Direction;
+   13          //舵机参数
+   14          #define Servos_Middle 3390               // 舵机中值       
+   15          #define Servos_Zmax 3750                 // 舵机左最值       
+   16          #define Servos_Ymax 2990                 // 舵机右最值
+   17          //定义ADC的最值
+   18          //因为使用12位精度ADC故 2的12次方=4096
+   19          #define ADC_MAX    4096                  //ADC 12位精度 2的12次方=4096
+   20          #define ADC_MIN     0                    
+   21          
+   22          uint16 DMA_ADC_dat[ADC_CH][(ADC_DATA-4)/2];   //将DMA中ADC数据高低位合并(每一个通道转换�
              -�次)
-   21          float average[ADC_CH]={0};  //ADC每一个通道去掉最大小值的平均值
-   22          float normalization_result[ADC_CH];//平均值归一化
-   23          
-   24          
+   23          float average[ADC_CH]={0};  //ADC每一个通道去掉最大小值的平均值
+   24          float normalization_result[ADC_CH];//平均值归一化
    25          
-   26          //把DMA中数据和在一起12位数据
-   27          void pooled_data(void)
-   28          {
-   29   1           uint8 i,j,n=0,a;
-   30   1           a=((ADC_DATA-4));//16
-   31   1           for(i=0;i<ADC_CH;i++)
-   32   1           {
-   33   2             n=0;
-   34   2           for(j=0;j<a;j=j+2)
-   35   2           {
-   36   3            DMA_ADC_dat[i][n] = ((uint16)DmaAdBuffer[i][j])<<8 | DmaAdBuffer[i][j+1];
-   37   3             n++;
-   38   3           }
-   39   2      
-   40   2           }
-   41   1      
-   42   1      }
-   43          //软件滤波限幅法
-   44          //限幅法滤波//
-   45          //冒泡排序一个通道电感的值//
-   46          void bubble_sort(void)
-   47          {
-   48   1         uint8 i,j,n,a;
-   49   1        uint16 temp;
-   50   1          a=((ADC_DATA-4)/2);
-   51   1          for(n=0;n<ADC_CH;n++)
-   52   1          {
-   53   2           for(i=0;i<a;i++)
-   54   2           {
-   55   3              for(j=0;j<a-1-i;j++)
-   56   3              {
-C251 COMPILER V5.60.0,  direction                                                          20/06/23  00:03:59  PAGE 2   
+   26          
+   27          
+   28          //把DMA中数据和在一起12位数据
+   29          void pooled_data(void)
+   30          {
+   31   1           uint8 i,j,n=0,a;
+   32   1           a=((ADC_DATA-4));//16
+   33   1           for(i=0;i<ADC_CH;i++)
+   34   1           {
+   35   2             n=0;
+   36   2           for(j=0;j<a;j=j+2)
+   37   2           {
+   38   3            DMA_ADC_dat[i][n] = ((uint16)DmaAdBuffer[i][j])<<8 | DmaAdBuffer[i][j+1];
+   39   3             n++;
+   40   3           }
+   41   2      
+   42   2           }
+   43   1      
+   44   1      }
+   45          //软件滤波限幅法
+   46          //限幅法滤波//
+   47          //冒泡排序一个通道电感的值//
+   48          void bubble_sort(void)
+   49          {
+   50   1         uint8 i,j,n,a;
+   51   1        uint16 temp;
+   52   1          a=((ADC_DATA-4)/2);
+   53   1          for(n=0;n<ADC_CH;n++)
+   54   1          {
+   55   2           for(i=0;i<a;i++)
+   56   2           {
+C251 COMPILER V5.60.0,  direction                                                          20/06/23  03:21:24  PAGE 2   
 
-   57   4               if(DMA_ADC_dat[n][j]>DMA_ADC_dat[n][j+1])    //这里默认采用升序来排列 
-   58   4                {
-   59   5                  temp = DMA_ADC_dat[n][j];
-   60   5                  DMA_ADC_dat[n][j] = DMA_ADC_dat[n][j+1];
-   61   5                  DMA_ADC_dat[n][j+1] = temp;
-   62   5                }
-   63   4              }
-   64   3           }
-   65   2          }
-   66   1      }
-   67          //排序完的数组去掉三组最大最小值求平均值
-   68          void average_value(void)
-   69          {
-   70   1        uint8 i,n,a;
-   71   1        char j;
-   72   1        
-   73   1          a=((ADC_DATA-4)/2);
-   74   1          for(n=0;n<ADC_CH;n++)
-   75   1          {
-   76   2            average[n] = 0;
-   77   2            for(j=5;j>=0;j++){  //循环递回平均值6次
-   78   3             
-   79   3           for(i=3;i<a-3;i++) //去掉最大最小的值
-   80   3           {
-   81   4             average[n] = average[n]+DMA_ADC_dat[n][i];
-   82   4              
-   83   4           }
-   84   3             average[n] = average[n]/(a-j);
-   85   3              
-   86   3          }
-   87   2           }
-   88   1          }
-   89          //归一化
-   90          /*
-   91          归一化的公式如下：(x-Min)/(Max-Min).其中,x为实时检测到的变量,Min与Max
-   92          为标定的电感采集最小与最大值.具体代码如下:
-   93          AD_M_Left[0] =(uint16)(99*(LeftAverage[0]-M_Left_min)/(M_Left_max[0]-M_Left_min)+1);
-   94          */
-   95          //若想舵机更顺滑可以对偏差error的计算进行处理，例如将归一化后的值开方
-   96          void normalization(void)
-   97          {
-   98   1          uint8 i;
-   99   1          for(i=0;i<ADC_CH;i++)
-  100   1          {
-  101   2          normalization_result[i] =100*((average[i]-ADC_MIN)/(ADC_MAX-ADC_MIN));
-  102   2      
-  103   2          }
-  104   1          
-  105   1      }
-  106          //开方
-  107          //======================================================================
-  108          //函数名称 : my_sqrt(float number)
-  109          //功能描述 : 开平方算法
-  110          //输入参数 : 
-  111          //输出参数 : 
-  112          //返回值   : NONE
-  113          //备注     :  
-  114          //======================================================================
-  115          float my_sqrt(float number)
-  116          {
-  117   1          long i;
-  118   1          float x, y;
-  119   1          const float f = 1.5F;
-  120   1          x = number * 0.5F;
-  121   1          y = number;
-  122   1          i = * ( long * ) &y;
-C251 COMPILER V5.60.0,  direction                                                          20/06/23  00:03:59  PAGE 3   
+   57   3              for(j=0;j<a-1-i;j++)
+   58   3              {
+   59   4               if(DMA_ADC_dat[n][j]>DMA_ADC_dat[n][j+1])    //这里默认采用升序来排列 
+   60   4                {
+   61   5                  temp = DMA_ADC_dat[n][j];
+   62   5                  DMA_ADC_dat[n][j] = DMA_ADC_dat[n][j+1];
+   63   5                  DMA_ADC_dat[n][j+1] = temp;
+   64   5                }
+   65   4              }
+   66   3           }
+   67   2          }
+   68   1      }
+   69          //排序完的数组去掉三组最大最小值求平均值
+   70          void average_value(void)
+   71          {
+   72   1        uint8 i,n,a;
+   73   1        char j;
+   74   1        
+   75   1          a=((ADC_DATA-4)/2);
+   76   1          for(n=0;n<ADC_CH;n++)
+   77   1          {
+   78   2            average[n] = 0;
+   79   2            for(j=5;j>=0;j++){  //循环递回平均值6次
+   80   3             
+   81   3           for(i=3;i<a-3;i++) //去掉最大最小的值
+   82   3           {
+   83   4             average[n] = average[n]+DMA_ADC_dat[n][i];
+   84   4              
+   85   4           }
+   86   3             average[n] = average[n]/(a-j);
+   87   3              
+   88   3          }
+   89   2           }
+   90   1          }
+   91          //归一化
+   92          /*
+   93          归一化的公式如下：(x-Min)/(Max-Min).其中,x为实时检测到的变量,Min与Max
+   94          为标定的电感采集最小与最大值.具体代码如下:
+   95          AD_M_Left[0] =(uint16)(99*(LeftAverage[0]-M_Left_min)/(M_Left_max[0]-M_Left_min)+1);
+   96          */
+   97          //若想舵机更顺滑可以对偏差error的计算进行处理，例如将归一化后的值开方
+   98          void normalization(void)
+   99          {
+  100   1          uint8 i;
+  101   1          for(i=0;i<ADC_CH;i++)
+  102   1          {
+  103   2          normalization_result[i] =100*((average[i]-ADC_MIN)/(ADC_MAX-ADC_MIN));
+  104   2      
+  105   2          }
+  106   1          
+  107   1      }
+  108          //开方
+  109          //======================================================================
+  110          //函数名称 : my_sqrt(float number)
+  111          //功能描述 : 开平方算法
+  112          //输入参数 : 
+  113          //输出参数 : 
+  114          //返回值   : NONE
+  115          //备注     :  
+  116          //======================================================================
+  117          float my_sqrt(float number)
+  118          {
+  119   1          long i;
+  120   1          float x, y;
+  121   1          const float f = 1.5F;
+  122   1          x = number * 0.5F;
+C251 COMPILER V5.60.0,  direction                                                          20/06/23  03:21:24  PAGE 3   
 
-  123   1          i = 0x5f3759df - ( i >> 1 );
-  124   1      
-  125   1          y = * ( float * ) &i;
-  126   1          y = y * ( f - ( x * y * y ) );
-  127   1          y = y * ( f - ( x * y * y ) );
-  128   1          return number * y;
-  129   1      }
-  130          float my_pow(float x)
-  131          {
-  132   1        return x*x;
-  133   1      }
-  134          //在计算偏差之前应调用好的函数
-  135          void prepare_dat(void)
-  136          {
-  137   1         bubble_sort();//冒泡排序一个通道电感的值//
-  138   1         average_value();//排序完的数组去掉最大最小值求平均值
-  139   1         normalization();//归一化
-  140   1      }
-  141          //浮点型的绝对值
-  142          float fabs(float x)
-  143          {
-  144   1         if(x>=0) return x;
-  145   1         if(x<0) return -x;
-  146   1      
-  147   1      
-  148   1      }
-  149          //======================================================================
-  150          //函数名称 : cal_poserror
-  151          //功能描述 : 差比和计算误差
-  152          //输入参数 : 
-  153          //输出参数 : 
-  154          //返回值   : NONE
-  155          //备注     :  across横电感 vertical竖电感 splayed八字型
-  156          //        (/ 十  十 \)   
-  157          // (A*(L-R)+B*(LM-RM))/(A*(L+R)+C*(|LM+RM|))
-  158          //======================================================================
-  159          void cal_poserror(float a_Ls,float a_La,float a_Lv,float a_Rs,float a_Ra,float a_Rv)
-  160          {
-  161   1         float cha ,he;
-  162   1         float A=1,B=1,C=1,P=1;
-  163   1         cha = my_sqrt(A*(a_La - a_Ra)) + my_sqrt(B*(a_Ls - a_Rs));
-  164   1         he = my_sqrt(A*(a_La + a_Ra)) + my_sqrt(C*fabs(a_Ls - a_Rs));
-  165   1         poserror = (cha/he)*P;
-  166   1          
-  167   1      }
-  168          
-  169          
-  170          
-  171          
-  172          
+  123   1          y = number;
+  124   1          i = * ( long * ) &y;
+  125   1          i = 0x5f3759df - ( i >> 1 );
+  126   1      
+  127   1          y = * ( float * ) &i;
+  128   1          y = y * ( f - ( x * y * y ) );
+  129   1          y = y * ( f - ( x * y * y ) );
+  130   1          return number * y;
+  131   1      }
+  132          float my_pow(float x)
+  133          {
+  134   1        return x*x;
+  135   1      }
+  136          //在计算偏差之前应调用好的函数
+  137          void prepare_dat(void)
+  138          {
+  139   1         bubble_sort();//冒泡排序一个通道电感的值//
+  140   1         average_value();//排序完的数组去掉最大最小值求平均值
+  141   1         normalization();//归一化
+  142   1      }
+  143          //浮点型的绝对值
+  144          float fabs(float x)
+  145          {
+  146   1         if(x>=0) return x;
+  147   1         if(x<0) return -x;
+  148   1      
+  149   1      
+  150   1      }
+  151          //======================================================================
+  152          //函数名称 : cal_poserror
+  153          //功能描述 : 差比和计算误差
+  154          //输入参数 : 
+  155          //输出参数 : 
+  156          //返回值   : NONE
+  157          //备注     :  across横电感 vertical竖电感 splayed八字型
+  158          //        (/ 十  十 \)   
+  159          // (A*(L-R)+B*(LM-RM))/(A*(L+R)+C*(|LM+RM|))
+  160          //======================================================================
+  161          //若输出量跟舵机打角有偏差需要调整，改变系数A B C P
+  162          void cal_poserror(float a_Ls,float a_La,float a_Lv,float a_Rs,float a_Ra,float a_Rv)
+  163          {
+  164   1         float cha ,he;
+  165   1         float A=1,B=1,C=1,P=1;
+  166   1         cha = my_sqrt(A*(a_La - a_Ra)) + my_sqrt(B*(a_Ls - a_Rs));
+  167   1         he = my_sqrt(A*(a_La + a_Ra)) + my_sqrt(C*fabs(a_Ls - a_Rs));
+  168   1         poserror = (cha/he)*P;
+  169   1          
+  170   1      }
+  171          /*******************************************************************************
+  172          * 函数名   ：steering_angl
+  173          * 描述      ：舵机角度设置
+  174          * 参数      ：
+  175                      angl        舵机角度（正：左转  负：右转  360 <= angl <= -400）
+  176          * 返回      :void
+  177          * 编写者   ：XY
+  178          * 编写日期  ：2021-12-19
+  179          *******************************************************************************/
+  180          void Steering_Angl(int angl)
+  181          {
+  182   1        int PWM1_duty;
+  183   1        
+  184   1          PWM1_duty = Servos_Middle  + angl;            //duty占空比为3390时，舵机居中
+  185   1        if(PWM1_duty <= Servos_Ymax)//右转限幅
+  186   1          {PWM1_duty = Servos_Ymax;}
+  187   1          if(PWM1_duty >= Servos_Zmax)//左转限幅
+  188   1          {PWM1_duty = Servos_Zmax;}
+C251 COMPILER V5.60.0,  direction                                                          20/06/23  03:21:24  PAGE 4   
+
+  189   1        pwm_init(PWMB_CH3_P22 , 50,PWM1_duty);  //PWMA设置占空比
+  190   1        
+  191   1        
+  192   1      }
+  193          
+  194          //根据不同元素判断系数PD的值（Direction），用AD值控制舵机打角
+  195          void Direction_out(void)
+  196          {
+  197   1        //进行标志位判断来配置每一个赛道元素的参数值  舵机一半最值为360，误差最
+             -大18，PD系数为20
+  198   1        //让其近似一比一的关系
+  199   1        if(circular_flag ==1)
+  200   1        {
+  201   2          Direction.KP=5; 
+  202   2          Direction.KD=2;
+  203   2        }
+  204   1         //转向PD控制
+  205   1         Direction.SumError=Direction.KP*poserror+Direction.KD*(poserror-Direction.PrevError);//电感差比和�
+             -��出的偏差做增量式PD计算
+  206   1         Direction.PrevError=poserror;
+  207   1         Direction.Pre1_Error[3]= Direction.Pre1_Error[2];
+  208   1         Direction.Pre1_Error[2]= Direction.Pre1_Error[1];
+  209   1         Direction.Pre1_Error[1]= Direction.Pre1_Error[0];
+  210   1         Direction.Pre1_Error[0]=Direction.SumError;
+  211   1        //拟合没有改变数值
+  212   1         Direction.Direct_Parameter=Direction.Pre1_Error[0]*0.8+Direction.Pre1_Error[1]*0.1+
+  213   1                                      Direction.Pre1_Error[2]*0.06+Direction.Pre1_Error[3]*0.04 ;//曲线拟合   最小二乘
+  214   1         Servo_duty = (int)(Direction.Direct_Parameter);
+  215   1         //转向限制幅度
+  216   1         if(Servo_duty >= 400) Servo_duty = 360;
+  217   1         if(Servo_duty <= -360) Servo_duty -360;
+  218   1          Steering_Angl(Servo_duty);
+  219   1      }
+  220          
+  221          
+  222          
+  223          
+  224          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       702     ------
+  code size            =       957     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------
-  edata size           =       244         36
+  edata size           =       286         36
   bit size             =    ------     ------
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
-C251 COMPILER V5.60.0,  direction                                                          20/06/23  00:03:59  PAGE 4   
-
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        36     ------
+  hconst size          =        42     ------
 End of Module Information.
 
 

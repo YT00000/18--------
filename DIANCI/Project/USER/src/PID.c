@@ -59,7 +59,7 @@ void PIDR_Init(PIDR_Type_Def *PIDR)
 		 PIDR->last_error =0; //上次误差
 		 PIDR->last_derivative =0; //上次误差与上上次误差之差
 }
-
+//把下面位置式PID屏蔽了，在舵机（direction.c）中直接用了PD
 //pwm=Kp*e(k)+Ki*∑e(k)+Kd[e（k）-e(k-1)]
 // /************************************************
 // 函数名称 ： PID_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)

@@ -19,7 +19,7 @@
 //ADCIF：ADC_DMA 中断请求标志位，当 ADC_DMA 完成扫描所有使能的 ADC 通道后后，硬件自动将
 //ADCIF 置 1，若使能 ADC_DMA 中断则进入中断服务程序。标志位需软件清零
 #include "headfile.h"
-int f=0;
+char circular_flag;
 //UART1中断
 void UART1_Isr() interrupt 4
 {
@@ -147,6 +147,10 @@ void INT4_Isr() interrupt 16
 {
 	INT4_CLEAR_FLAG;  //清除中断标志
 }
+
+
+
+
 
 void TM0_Isr() interrupt 1
 {

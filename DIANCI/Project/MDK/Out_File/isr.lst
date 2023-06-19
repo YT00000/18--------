@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  isr                                                                20/06/23  00:03:58  PAGE 1   
+C251 COMPILER V5.60.0,  isr                                                                20/06/23  03:21:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE isr
@@ -32,7 +32,7 @@ stmt  level    source
    19          //ADCIF：ADC_DMA 中断请求标志位，当 ADC_DMA 完成扫描所有使能的 ADC 通道后后，硬件自动将
    20          //ADCIF 置 1，若使能 ADC_DMA 中断则进入中断服务程序。标志位需软件清零
    21          #include "headfile.h"
-   22          int f=0;
+   22          char circular_flag;
    23          //UART1中断
    24          void UART1_Isr() interrupt 4
    25          {
@@ -66,7 +66,7 @@ stmt  level    source
    53   1          if(UART2_GET_TX_FLAG)
    54   1        {
    55   2              UART2_CLEAR_TX_FLAG;
-C251 COMPILER V5.60.0,  isr                                                                20/06/23  00:03:58  PAGE 2   
+C251 COMPILER V5.60.0,  isr                                                                20/06/23  03:21:23  PAGE 2   
 
    56   2          busy[2] = 0;
    57   2        }
@@ -134,7 +134,7 @@ stmt  level    source
   119   1      //   if(duty >= 750||f==1)
   120   1      //    {
   121   1      //      f=1;
-C251 COMPILER V5.60.0,  isr                                                                20/06/23  00:03:58  PAGE 3   
+C251 COMPILER V5.60.0,  isr                                                                20/06/23  03:21:23  PAGE 3   
 
   122   1      //      duty -=50 ;
   123   1      //      if(duty<=0) f=0;
@@ -165,98 +165,102 @@ stmt  level    source
   148   1        INT4_CLEAR_FLAG;  //清除中断标志
   149   1      }
   150          
-  151          void TM0_Isr() interrupt 1
-  152          {
-  153   1      
-  154   1      }
-  155          void TM1_Isr() interrupt 3
+  151          
+  152          
+  153          
+  154          
+  155          void TM0_Isr() interrupt 1
   156          {
   157   1      
   158   1      }
-  159          void TM2_Isr() interrupt 12
+  159          void TM1_Isr() interrupt 3
   160          {
-  161   1        TIM2_CLEAR_FLAG;  //清除中断标志
-  162   1        
-  163   1      }
-  164          void TM3_Isr() interrupt 19
-  165          {
-  166   1        TIM3_CLEAR_FLAG; //清除中断标志
-  167   1        
-  168   1      }
-  169          
-  170          void TM4_Isr() interrupt 20
-  171          {
-  172   1        TIM4_CLEAR_FLAG; //清除中断标志
-  173   1      //  ccd_collect();   //CCD采集数据
-  174   1      
-  175   1      }
-  176          //========================================================================
-  177          // 函数: DMA_ADC_ISR_Handler
-  178          // 描述: DMA ADC 中断函数.
-  179          // 参数: none.
-  180          // 返回: none.
-  181          // 版本: V1.0, 2022-03-23
-  182          //========================================================================
-  183          void DMA_ADC_ISR_Handler (void) interrupt 48
-  184          {
-  185   1        // TODO: 在此处添加用户代码
-  186   1        if(DMA_ADC_STA & 0x01)  //AD转换完成
-  187   1        {
-C251 COMPILER V5.60.0,  isr                                                                20/06/23  00:03:58  PAGE 4   
+  161   1      
+  162   1      }
+  163          void TM2_Isr() interrupt 12
+  164          {
+  165   1        TIM2_CLEAR_FLAG;  //清除中断标志
+  166   1        
+  167   1      }
+  168          void TM3_Isr() interrupt 19
+  169          {
+  170   1        TIM3_CLEAR_FLAG; //清除中断标志
+  171   1        
+  172   1      }
+  173          
+  174          void TM4_Isr() interrupt 20
+  175          {
+  176   1        TIM4_CLEAR_FLAG; //清除中断标志
+  177   1      //  ccd_collect();   //CCD采集数据
+  178   1      
+  179   1      }
+  180          //========================================================================
+  181          // 函数: DMA_ADC_ISR_Handler
+  182          // 描述: DMA ADC 中断函数.
+  183          // 参数: none.
+  184          // 返回: none.
+  185          // 版本: V1.0, 2022-03-23
+  186          //========================================================================
+  187          void DMA_ADC_ISR_Handler (void) interrupt 48
+C251 COMPILER V5.60.0,  isr                                                                20/06/23  03:21:23  PAGE 4   
 
-  188   2          DMA_ADC_STA &= ~0x01; //清标志位
-  189   2          DmaADCFlag = 1;
-  190   2          pooled_data();
-  191   2          
-  192   2        }
-  193   1      }
-  194          
-  195          //========================================================================
-  196          // 函数: DMA_ISR_Handler
-  197          // 描述: DMA中断函数.
-  198          // 参数: none.
-  199          // 返回: none.
-  200          // 版本: V1.0, 2021-05-25
-  201          //========================================================================
-  202          void DMA_ISR_Handler (void) interrupt 13
-  203          {
-  204   1        // TODO: 在此处添加用户代码
-  205   1        
-  206   1        //----------- DMA ADC --------------
-  207   1        if(DMA_ADC_STA & 0x01)  //AD转换完成
-  208   1        {
-  209   2          DMA_ADC_STA &= ~0x01; //清标志位
-  210   2          DmaADCFlag = 1;
-  211   2          pooled_data();
-  212   2          
-  213   2        }
-  214   1      }
-  215          
-  216          //void  INT0_Isr()  interrupt 0;
-  217          //void  TM0_Isr()   interrupt 1;
-  218          //void  INT1_Isr()  interrupt 2;
-  219          //void  TM1_Isr()   interrupt 3;
-  220          //void  UART1_Isr() interrupt 4;
-  221          //void  ADC_Isr()   interrupt 5;
-  222          //void  LVD_Isr()   interrupt 6;
-  223          //void  PCA_Isr()   interrupt 7;
-  224          //void  UART2_Isr() interrupt 8;
-  225          //void  SPI_Isr()   interrupt 9;
-  226          //void  INT2_Isr()  interrupt 10;
-  227          //void  INT3_Isr()  interrupt 11;
-  228          //void  TM2_Isr()   interrupt 12;
-  229          //void  INT4_Isr()  interrupt 16;
-  230          //void  UART3_Isr() interrupt 17;
-  231          //void  UART4_Isr() interrupt 18;
-  232          //void  TM3_Isr()   interrupt 19;
-  233          //void  TM4_Isr()   interrupt 20;
-  234          //void  CMP_Isr()   interrupt 21;
-  235          //void  I2C_Isr()   interrupt 24;
-  236          //void  USB_Isr()   interrupt 25;
-  237          //void  PWM1_Isr()  interrupt 26;
-  238          //void  PWM2_Isr()  interrupt 27;
-  239          
-  240          
+  188          {
+  189   1        // TODO: 在此处添加用户代码
+  190   1        if(DMA_ADC_STA & 0x01)  //AD转换完成
+  191   1        {
+  192   2          DMA_ADC_STA &= ~0x01; //清标志位
+  193   2          DmaADCFlag = 1;
+  194   2          pooled_data();
+  195   2          
+  196   2        }
+  197   1      }
+  198          
+  199          //========================================================================
+  200          // 函数: DMA_ISR_Handler
+  201          // 描述: DMA中断函数.
+  202          // 参数: none.
+  203          // 返回: none.
+  204          // 版本: V1.0, 2021-05-25
+  205          //========================================================================
+  206          void DMA_ISR_Handler (void) interrupt 13
+  207          {
+  208   1        // TODO: 在此处添加用户代码
+  209   1        
+  210   1        //----------- DMA ADC --------------
+  211   1        if(DMA_ADC_STA & 0x01)  //AD转换完成
+  212   1        {
+  213   2          DMA_ADC_STA &= ~0x01; //清标志位
+  214   2          DmaADCFlag = 1;
+  215   2          pooled_data();
+  216   2          
+  217   2        }
+  218   1      }
+  219          
+  220          //void  INT0_Isr()  interrupt 0;
+  221          //void  TM0_Isr()   interrupt 1;
+  222          //void  INT1_Isr()  interrupt 2;
+  223          //void  TM1_Isr()   interrupt 3;
+  224          //void  UART1_Isr() interrupt 4;
+  225          //void  ADC_Isr()   interrupt 5;
+  226          //void  LVD_Isr()   interrupt 6;
+  227          //void  PCA_Isr()   interrupt 7;
+  228          //void  UART2_Isr() interrupt 8;
+  229          //void  SPI_Isr()   interrupt 9;
+  230          //void  INT2_Isr()  interrupt 10;
+  231          //void  INT3_Isr()  interrupt 11;
+  232          //void  TM2_Isr()   interrupt 12;
+  233          //void  INT4_Isr()  interrupt 16;
+  234          //void  UART3_Isr() interrupt 17;
+  235          //void  UART4_Isr() interrupt 18;
+  236          //void  TM3_Isr()   interrupt 19;
+  237          //void  TM4_Isr()   interrupt 20;
+  238          //void  CMP_Isr()   interrupt 21;
+  239          //void  I2C_Isr()   interrupt 24;
+  240          //void  USB_Isr()   interrupt 25;
+  241          //void  PWM1_Isr()  interrupt 26;
+  242          //void  PWM2_Isr()  interrupt 27;
+  243          
+  244          
 
 
 Module Information          Static   Overlayable
@@ -267,18 +271,18 @@ Module Information          Static   Overlayable
   idata size           =    ------     ------
   pdata size           =    ------     ------
   xdata size           =    ------     ------
+C251 COMPILER V5.60.0,  isr                                                                20/06/23  03:21:23  PAGE 5   
+
   xdata-const size     =    ------     ------
-  edata size           =         3     ------
+  edata size           =         2     ------
   bit size             =    ------     ------
   ebit size            =    ------     ------
-C251 COMPILER V5.60.0,  isr                                                                20/06/23  00:03:58  PAGE 5   
-
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =         6     ------
+  hconst size          =    ------     ------
 End of Module Information.
 
 

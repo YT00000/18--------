@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            20/06/23  00:03:58  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            20/06/23  03:21:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -66,7 +66,7 @@ stmt  level    source
    46          {
    47   1          int16 datl;
    48   1          if(DIL == 1)
-C251 COMPILER V5.60.0,  encoder                                                            20/06/23  00:03:58  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            20/06/23  03:21:23  PAGE 2   
 
    49   1          {
    50   2            datl = ctimer_count_read(SPEEDL_PLUSE);
@@ -135,7 +135,7 @@ Module Information          Static   Overlayable
 ------------------------------------------------
   code size            =       171     ------
   ecode size           =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            20/06/23  00:03:58  PAGE 3   
+C251 COMPILER V5.60.0,  encoder                                                            20/06/23  03:21:23  PAGE 3   
 
   data size            =    ------     ------
   idata size           =    ------     ------

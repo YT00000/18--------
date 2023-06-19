@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  PID                                                                20/06/23  00:03:58  PAGE 1   
+C251 COMPILER V5.60.0,  PID                                                                20/06/23  03:21:23  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE PID
@@ -66,13 +66,13 @@ stmt  level    source
    55   1           PIDR->out =0;   //pid输出
    56   1           PIDR->integrator =0; //积分值
    57   1           PIDR->limit =0;//积分限幅
-C251 COMPILER V5.60.0,  PID                                                                20/06/23  00:03:58  PAGE 2   
+C251 COMPILER V5.60.0,  PID                                                                20/06/23  03:21:23  PAGE 2   
 
    58   1           PIDR->error =0;      //当前偏差
    59   1           PIDR->last_error =0; //上次误差
    60   1           PIDR->last_derivative =0; //上次误差与上上次误差之差
    61   1      }
-   62          
+   62          //把下面位置式PID屏蔽了，在舵机（direction.c）中直接用了PD
    63          //pwm=Kp*e(k)+Ki*∑e(k)+Kd[e（k）-e(k-1)]
    64          // /************************************************
    65          // 函数名称 ： PID_Loc(float SetValue,float ActualValue,PIDL_Type_Def *PIDL)
@@ -134,7 +134,7 @@ stmt  level    source
   117            
   118            
   119          //}
-C251 COMPILER V5.60.0,  PID                                                                20/06/23  00:03:58  PAGE 3   
+C251 COMPILER V5.60.0,  PID                                                                20/06/23  03:21:23  PAGE 3   
 
   120          //pwm+=Kp[e（k）-e(k-1)]+Ki*e(k)+Kd[e(k)-2e(k-1)+e(k-2)]
   121          /************************************************
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
-C251 COMPILER V5.60.0,  PID                                                                20/06/23  00:03:58  PAGE 4   
+C251 COMPILER V5.60.0,  PID                                                                20/06/23  03:21:23  PAGE 4   
 
   xdata size           =    ------     ------
   xdata-const size     =    ------     ------

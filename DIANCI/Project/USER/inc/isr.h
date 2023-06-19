@@ -20,8 +20,8 @@
 #ifndef __ISR_H_
 #define __ISR_H_
 
-extern int duty;
-
+//extern int duty;
+extern char circular_flag;
 
 
 
