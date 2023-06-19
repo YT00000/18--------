@@ -63,21 +63,28 @@ void bubble_sort(void)
      }
     }
 }
-//排序完的数组去掉最大最小值求平均值
+//排序完的数组去掉三组最大最小值求平均值
 void average_value(void)
 {
   uint8 i,n,a;
+	char j;
+	
     a=((ADC_DATA-4)/2);
     for(n=0;n<ADC_CH;n++)
     {
-        average[n] = 0;
-     for(i=1;i<a-1;i++) //去掉最大最小的值
+			average[n] = 0;
+			for(j=5;j>=0;j++){  //循环递回平均值6次
+       
+     for(i=3;i<a-3;i++) //去掉最大最小的值
      {
-        average[n] = average[n]+DMA_ADC_dat[n][i];
+			 average[n] = average[n]+DMA_ADC_dat[n][i];
+        
      }
-        average[n] = average[n]/(a-2);
+       average[n] = average[n]/(a-j);
+		    
     }
-}
+     `}
+		}
 //归一化
 /*
 归一化的公式如下：(x-Min)/(Max-Min).其中,x为实时检测到的变量,Min与Max

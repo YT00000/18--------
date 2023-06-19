@@ -29,7 +29,7 @@ void	DMA_config(void)
 		DMA_ADC_InitStructure.DMA_Enable = ENABLE;			//DMA使能  	ENABLE,DISABLE
 		DMA_ADC_InitStructure.DMA_Channel = 0x0FC0;			//ADC通道使能寄存器, 1:使能, bit15~bit0 对应 ADC15~ADC0  需要自己算用几通道开几
 		DMA_ADC_InitStructure.DMA_Buffer = (uint16)DmaAdBuffer;	//ADC转换数据存储地址
-		DMA_ADC_InitStructure.DMA_Times = ADC_8_Times;	//每个通道转换次数, ADC_1_Times,ADC_2_Times,ADC_4_Times,ADC_8_Times,ADC_16_Times,ADC_32_Times,ADC_64_Times,ADC_128_Times,ADC_256_Times
+		DMA_ADC_InitStructure.DMA_Times = ADC_16_Times;	//每个通道转换次数, ADC_1_Times,ADC_2_Times,ADC_4_Times,ADC_8_Times,ADC_16_Times,ADC_32_Times,ADC_64_Times,ADC_128_Times,ADC_256_Times
 		DMA_ADC_Inilize(&DMA_ADC_InitStructure);		//初始化
 		NVIC_DMA_ADC_Init(ENABLE,Priority_0,Priority_0);		//中断使能, ENABLE/DISABLE; 优先级(低到高) Priority_0~Priority_3; 总线优先级(低到高) Priority_0~Priority_3
 		DMA_ADC_TRIG();		//触发启动转换

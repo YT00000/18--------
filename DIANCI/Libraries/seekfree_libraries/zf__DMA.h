@@ -102,7 +102,7 @@
 #define SPI_SS_P35				3
 
 #define	ADC_CH		6			/* 1~16, ADC转换通道数, 需同步修改转换通道 */
-#define	ADC_DATA	20			/* 6~n, 每个通道ADC转换数据总数, 2*转换次数+4, 需同步修改转换次数 */
+#define	ADC_DATA	36			/* 6~n, 每个通道ADC转换数据总数, 2*转换次数+4, 需同步修改转换次数 */
 
 extern bit DmaADCFlag;
 extern uint8 xdata DmaAdBuffer[ADC_CH][ADC_DATA];

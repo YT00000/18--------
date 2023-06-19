@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 1   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE oled
@@ -66,7 +66,7 @@ stmt  level    source
    55   1        OLED_WR_Byte(0xAF,OLED_CMD);//点亮屏幕
    56   1      }
    57          
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 2   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 2   
 
    58          //关闭OLED显示 
    59          void OLED_DisPlay_Off(void)
@@ -134,7 +134,7 @@ stmt  level    source
   121          //画线
   122          //x:0~128
   123          //y:0~64
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 3   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 3   
 
   124          //void OLED_DrawLine(uint8 x1,uint8 y1,uint8 x2,uint8 y2)
   125          //{
@@ -202,7 +202,7 @@ stmt  level    source
   187          //size:选择字体 12/16/24
   188          //取模方式 逐列式
   189          void OLED_ShowChar(uint8 x,uint8 y,uint8 chr,uint8 size1)
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 4   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 4   
 
   190          {
   191   1        uint8 i,m,temp,size2,chr1;
@@ -270,7 +270,7 @@ stmt  level    source
   253          //len :数字的位数
   254          //size:字体大小
   255          void OLED_ShowNum(uint8 x,uint8 y,u32 num,uint8 len,uint8 size1)
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 5   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 5   
 
   256          {
   257   1        uint8 t,temp;
@@ -338,7 +338,7 @@ stmt  level    source
   319   2          if(m==0)
   320   2          {
   321   3            OLED_ShowChinese(128,24,t,16); //写入一个汉字保存在OLED_GRAM[][]数组中
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 6   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 6   
 
   322   3            t++;
   323   3          }
@@ -406,7 +406,7 @@ stmt  level    source
   385   1        spi_init(OLED_SPI_N, OLED_SPI_SCLK_PIN, OLED_SPI_MOSI_PIN, OLED_SPI_MISO_PIN, 3, MASTER, SPI_SYSclk_DIV_
              -4);
   386   1        
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 7   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 7   
 
   387   1        OLED_RES_Clr();
   388   1        delay_ms(200);
@@ -474,7 +474,7 @@ stmt  level    source
   448   2              length = zf_sprintf( &buff[1],"%f",dat);
   449   2              length++;
   450   2          }
-C251 COMPILER V5.60.0,  oled                                                               18/06/23  13:19:29  PAGE 8   
+C251 COMPILER V5.60.0,  oled                                                               18/06/23  22:22:08  PAGE 8   
 
   451   1          point = length - 7;         //计算小数点位置
   452   1          start = point - num - 1;    //计算起始位
