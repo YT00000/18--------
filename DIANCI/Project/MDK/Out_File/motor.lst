@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  motor                                                              20/06/23  03:21:23  PAGE 1   
+C251 COMPILER V5.60.0,  motor                                                              24/06/23  21:20:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE motor
@@ -60,13 +60,13 @@ stmt  level    source
    45           *  备    注：
    46           *************************************************************************/
    47          //因为占空比过大会导致电机损坏，故我们取了70%为最大占空比（35000），由于1024线编码器用了四倍频最大脉冲为4
-             -086，
+             -096，
    48          //经过运算4096*8=32768，故取P I D（0~8）
    49          // 若要P I D（0~120）占空比的范围max= 4096 * PID范围；
    50          //此函数所得占空比和递给电机的占空比之间的比例系数为 duty_Max/(X*500)
    51          void PID_control(int32 expected_speedL,int32 expected_speedR)
    52          {
-C251 COMPILER V5.60.0,  motor                                                              20/06/23  03:21:23  PAGE 2   
+C251 COMPILER V5.60.0,  motor                                                              24/06/23  21:20:36  PAGE 2   
 
    53   1        float error_L,error_R;
    54   1      
@@ -76,7 +76,7 @@ stmt  level    source
    58   1          error_R = expected_speedR - now_speedR;
    59   1      //增量式PID
    60   1          out_duty_L = (int32)(PIDL_Inc(error_L,&pid_LL));
-   61   1        out_duty_L = (int32)(PIDR_Inc(error_R,&pid_RR));
+   61   1          out_duty_R = (int32)(PIDR_Inc(error_R,&pid_RR));
    62   1      //电机占空比限制
    63   1        if(out_duty_L >duty_Max){out_duty_L = duty_Max;}
    64   1        if(out_duty_L <duty_Min){out_duty_L = duty_Min;}  
@@ -92,7 +92,7 @@ stmt  level    source
    74           *  修改时间：2023.4.24
    75           *  备    注：
    76           *************************************************************************/
-   77          void motor_Control(void)
+   77          void motor_Control(void) 
    78          {
    79   1           int16 dutyR =0;
    80   1         int16 dutyL =0;
@@ -134,14 +134,14 @@ stmt  level    source
   116          
   117          
   118          
-C251 COMPILER V5.60.0,  motor                                                              20/06/23  03:21:23  PAGE 3   
+C251 COMPILER V5.60.0,  motor                                                              24/06/23  21:20:36  PAGE 3   
 
   119          
   120          void qian(void) // P1-pwm  P2-0 P3-pwm P4-0时前转
   121          {
-  122   1        pwm_duty(PWMA_CH1P_P10, 5000); // 占空比10%
+  122   1        pwm_duty(PWMA_CH1P_P10, 35000); // 占空比10%
   123   1        pwm_duty(PWMB_CH2_P21, 0);     // 占空比0%
-  124   1        pwm_duty(PWMB_CH1_P20, 5000);  // 占空比10%
+  124   1        pwm_duty(PWMB_CH1_P20, 35000);  // 占空比10%
   125   1        pwm_duty(PWMB_CH4_P23, 0);     // 占空比0%
   126   1      }
   127          void hou(void) // P1-0  P2-pwm P3-0 P4-pwm时后转
@@ -162,7 +162,7 @@ stmt  level    source
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       501     ------
+  code size            =       505     ------
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------

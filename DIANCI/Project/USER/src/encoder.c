@@ -86,20 +86,33 @@ void clean_encoder(void)
 //  @return     uint16      返回计数值
 //  Sample usage:          编码器程序测试  Use_encoderL();  
 //-------------------------------------------------------------------------------------------------------------------
-void Use_encoderL(void)
+//void Use_encoder(void)
+//{
+//	 templ_pluse=0;
+//	 tempr_pluse=0;
+//     encoder_Init();
+//	 delay_ms(200);//200ms计数时间，也是让其完全初始化，不要删除，不然会不好使
+//     templ_pluse = Read_encoderL();
+//	 tempr_pluse = Read_encoderR();
+//	 printf("templ_pluse = %d\r\n", templ_pluse);
+//	 
+//	 printf("tempr_pluse = %d\r\n", tempr_pluse);
+//	 
+//	 clean_encoder();
+//}
+
+void Use_encoder(void)
 {
 	 templ_pluse=0;
 	 tempr_pluse=0;
-     encoder_Init();
+   encoder_Init();
 	 delay_ms(200);//200ms计数时间，也是让其完全初始化，不要删除，不然会不好使
-     templ_pluse = Read_encoderL();
+   templ_pluse = Read_encoderL();
 	 tempr_pluse = Read_encoderR();
-	 printf("templ_pluse = %d\r\n", templ_pluse);
-	 
-	 printf("tempr_pluse = %d\r\n", tempr_pluse);
-	 
+	 OLED_ShowString(0,0,"z:",12);
+	 OLED_ShowString(0,12,"y:",12);
+	 oled_printf_float(18,0,templ_pluse,4,0,12);
+	 oled_printf_float(18,12,tempr_pluse,4,0,12);
 	 clean_encoder();
 }
-
-
 

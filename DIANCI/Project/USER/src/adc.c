@@ -76,11 +76,13 @@ void shuju_adc(void)
 			  OLED_ShowString(72,0,":",12);	
 			for(i=0; i<ADC_CH; i++)     //��ӡÿ������ͨ���Ĳ������//5
 			{
-         if(i<5)  x=15;
+         if(i<5)  x=18;
 				else	if(i==5) { x=78;y=0;}
 				else y=0;
-							
-        
+//				for(n=0;n<(ADC_DATA-4);n++){			
+//        printf("%d ",average[i]);
+//				}
+//				printf("\r\n"); //串口输出回车换行符      
 				oled_printf_float(x,y,my_sqrt(normalization_result[i]),2,3,12);
             OLED_Refresh();						
 					y=y+12;	

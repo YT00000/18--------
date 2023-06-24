@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            20/06/23  03:21:23  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            24/06/23  21:20:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -66,7 +66,7 @@ stmt  level    source
    46          {
    47   1          int16 datl;
    48   1          if(DIL == 1)
-C251 COMPILER V5.60.0,  encoder                                                            20/06/23  03:21:23  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            24/06/23  21:20:36  PAGE 2   
 
    49   1          {
    50   2            datl = ctimer_count_read(SPEEDL_PLUSE);
@@ -112,31 +112,44 @@ stmt  level    source
    87          //  Sample usage:          编码器程序测试  Use_encoderL();  
    88          //-------------------------------------------------------------------------------------------------------
              -------------
-   89          void Use_encoderL(void)
-   90          {
-   91   1         templ_pluse=0;
-   92   1         tempr_pluse=0;
-   93   1           encoder_Init();
-   94   1         delay_ms(200);//200ms计数时间，也是让其完全初始化，不要删除，不然会不好使
-   95   1           templ_pluse = Read_encoderL();
-   96   1         tempr_pluse = Read_encoderR();
-   97   1         printf("templ_pluse = %d\r\n", templ_pluse);
-   98   1         
-   99   1         printf("tempr_pluse = %d\r\n", tempr_pluse);
-  100   1         
-  101   1         clean_encoder();
-  102   1      }
+   89          //void Use_encoder(void)
+   90          //{
+   91          //   templ_pluse=0;
+   92          //   tempr_pluse=0;
+   93          //     encoder_Init();
+   94          //   delay_ms(200);//200ms计数时间，也是让其完全初始化，不要删除，不然会不好使
+   95          //     templ_pluse = Read_encoderL();
+   96          //   tempr_pluse = Read_encoderR();
+   97          //   printf("templ_pluse = %d\r\n", templ_pluse);
+   98          //   
+   99          //   printf("tempr_pluse = %d\r\n", tempr_pluse);
+  100          //   
+  101          //   clean_encoder();
+  102          //}
   103          
-  104          
-  105          
+  104          void Use_encoder(void)
+  105          {
+  106   1         templ_pluse=0;
+  107   1         tempr_pluse=0;
+  108   1         encoder_Init();
+  109   1         delay_ms(200);//200ms计数时间，也是让其完全初始化，不要删除，不然会不好使
+  110   1         templ_pluse = Read_encoderL();
+C251 COMPILER V5.60.0,  encoder                                                            24/06/23  21:20:36  PAGE 3   
+
+  111   1         tempr_pluse = Read_encoderR();
+  112   1         OLED_ShowString(0,0,"z:",12);
+  113   1         OLED_ShowString(0,12,"y:",12);
+  114   1         oled_printf_float(18,0,templ_pluse,4,0,12);
+  115   1         oled_printf_float(18,12,tempr_pluse,4,0,12);
+  116   1         clean_encoder();
+  117   1      }
+  118          
 
 
 Module Information          Static   Overlayable
 ------------------------------------------------
-  code size            =       171     ------
+  code size            =       252     ------
   ecode size           =    ------     ------
-C251 COMPILER V5.60.0,  encoder                                                            20/06/23  03:21:23  PAGE 3   
-
   data size            =    ------     ------
   idata size           =    ------     ------
   pdata size           =    ------     ------
@@ -150,7 +163,7 @@ Module Information          Static   Overlayable
   far data size        =    ------     ------
   huge data size       =    ------     ------
   const size           =    ------     ------
-  hconst size          =        50     ------
+  hconst size          =        18     ------
 End of Module Information.
 
 

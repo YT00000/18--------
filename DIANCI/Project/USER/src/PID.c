@@ -25,9 +25,10 @@ float constrain_float(float amt, float low, float high)
 *************************************************/
 void PIDL_Init(PIDL_Type_Def *PIDL)
 {
-     PIDL->Kp =0;
-	   PIDL->Ki =0;
-	   PIDL->Kd =0;
+     PIDL->Kp =6;
+	   PIDL->Ki =2;
+	   PIDL->Kd =4;
+	
 	   PIDL->out_p =0; //Kp输出
 	   PIDL->out_i =0; //Ki输出
 		 PIDL->out_d =0; //Kd输出
@@ -46,9 +47,9 @@ void PIDL_Init(PIDL_Type_Def *PIDL)
 *************************************************/
 void PIDR_Init(PIDR_Type_Def *PIDR)
 {
-     PIDR->Kp =0;
-	   PIDR->Ki =0;
-	   PIDR->Kd =0;
+     PIDR->Kp =6;
+	   PIDR->Ki =2;
+	   PIDR->Kd =4;
 		 PIDR->out_p =0; //Kp输出
 	   PIDR->out_i =0; //Ki输出
 		 PIDR->out_d =0; //Kd输出

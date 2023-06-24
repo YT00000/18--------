@@ -14,7 +14,7 @@ void encoder_Init(void);
 int16 Read_encoderL(void);
 int16 Read_encoderR(void);
 void clean_encoderL(void);
-void Use_encoderL(void);
+void Use_encoder(void);
 
 #endif
 

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  adc                                                                20/06/23  03:21:23  PAGE 1   
+C251 COMPILER V5.60.0,  adc                                                                24/06/23  21:20:36  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE adc
@@ -66,7 +66,7 @@ stmt  level    source
    50          //   adc_data[4] = adc_once(ADC_P16,ADC_12BIT);
    51          //}
    52          //����ת����6�θĳ�8��
-C251 COMPILER V5.60.0,  adc                                                                20/06/23  03:21:23  PAGE 2   
+C251 COMPILER V5.60.0,  adc                                                                24/06/23  21:20:36  PAGE 2   
 
    53          void shuju_adc(void)
    54          {
@@ -94,22 +94,24 @@ stmt  level    source
    76   2              OLED_ShowString(72,0,":",12); 
    77   2            for(i=0; i<ADC_CH; i++)     //��ӡÿ������ͨ���Ĳ������//5
    78   2            {
-   79   3               if(i<5)  x=15;
+   79   3               if(i<5)  x=18;
    80   3              else  if(i==5) { x=78;y=0;}
    81   3              else y=0;
-   82   3                    
-   83   3              
-   84   3              oled_printf_float(x,y,my_sqrt(normalization_result[i]),2,3,12);
-   85   3                  OLED_Refresh();           
-   86   3                y=y+12; 
-   87   3                }
-   88   2          
-   89   2            
-   90   2           DMA_ADC_TRIG();    //���´���������һ��ת��
-   91   2        } 
-   92   1      }
-   93          
-   94          
+   82   3      //        for(n=0;n<(ADC_DATA-4);n++){      
+   83   3      //        printf("%d ",average[i]);
+   84   3      //        }
+   85   3      //        printf("\r\n"); //串口输出回车换行符      
+   86   3              oled_printf_float(x,y,my_sqrt(normalization_result[i]),2,3,12);
+   87   3                  OLED_Refresh();           
+   88   3                y=y+12; 
+   89   3                }
+   90   2          
+   91   2            
+   92   2           DMA_ADC_TRIG();    //���´���������һ��ת��
+   93   2        } 
+   94   1      }
+   95          
+   96          
 
 
 Module Information          Static   Overlayable

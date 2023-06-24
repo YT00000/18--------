@@ -12,8 +12,8 @@
 #define OLED_SPI_SCLK_PIN   SPI_CH1_SCLK_P15  //D0_sck
 #define OLED_SPI_MOSI_PIN   SPI_CH1_MOSI_P13   //D1_sda
 #define OLED_SPI_MISO_PIN   SPI_CH1_MISO_P14	//定义SPI_MISO引脚  OLED屏幕没有MISO引脚，但是这里任然需要定义，在spi的初始化时需要使用
-#define OLED_SPI_REST_PIN 	P20				//液晶复位引脚定义
-#define OLED_SPI_DC_PIN   	P21   			//液晶命令位引脚定义
+#define OLED_SPI_REST_PIN 	P42				//液晶复位引脚定义
+#define OLED_SPI_DC_PIN   	P73   			//液晶命令位引脚定义
 #define OLED_SPI_CS_PIN     P22				//定义硬件SPI_CS引脚
 
 

@@ -20,7 +20,7 @@ DirectPidStruct Direction;
 #define ADC_MIN     0                    
 
 uint16 DMA_ADC_dat[ADC_CH][(ADC_DATA-4)/2];   //将DMA中ADC数据高低位合并(每一个通道转换八次)
-float average[ADC_CH]={0};  //ADC每一个通道去掉最大小值的平均值
+double average[ADC_CH]={0};  //ADC每一个通道去掉最大小值的平均值
 float normalization_result[ADC_CH];//平均值归一化
 
 
@@ -69,23 +69,36 @@ void bubble_sort(void)
 //排序完的数组去掉三组最大最小值求平均值
 void average_value(void)
 {
-  uint8 i,n,a;
-	char j;
+  uint8 i,n,a,j;
+	double sum=0;
 	
     a=((ADC_DATA-4)/2);
     for(n=0;n<ADC_CH;n++)
     {
+			sum=0;
 			average[n] = 0;
-			for(j=5;j>=0;j++){  //循环递回平均值6次
-       
-     for(i=3;i<a-3;i++) //去掉最大最小的值
-     {
-			 average[n] = average[n]+DMA_ADC_dat[n][i];
-        
-     }
-       average[n] = average[n]/(a-j);
+			
+			for(j=0;j<=6;j++)
+			{  //循环递回平均值6次
+       if(j==0)
+			 {
+				 for(i=3;i<a-3;i++) //去掉最大最小的值
+				 {
+					average[n] = average[n]+DMA_ADC_dat[n][i];
+					
+				 }
+			  sum = average[n];
+			 }
+			 else {
+				average[n] =average[n] +sum;
+			  sum = average[n];
+			 }
+			 
+        sum = sum/(a+j-6); 
 		    
+			
     }
+			 average[n]= sum ;
      }
 		}
 //归一化
@@ -213,7 +226,7 @@ void Direction_out(void)
 																Direction.Pre1_Error[2]*0.06+Direction.Pre1_Error[3]*0.04 ;//曲线拟合   最小二乘
    Servo_duty = (int)(Direction.Direct_Parameter);
 	 //转向限制幅度
-	 if(Servo_duty >= 400) Servo_duty = 360;
+	 if(Servo_duty >= 400) Servo_duty = 400;
 	 if(Servo_duty <= -360) Servo_duty -360;
 	  Steering_Angl(Servo_duty);
 }
