@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  encoder                                                            24/06/23  21:20:36  PAGE 1   
+C251 COMPILER V5.60.0,  encoder                                                            25/06/23  18:35:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE encoder
@@ -66,7 +66,7 @@ stmt  level    source
    46          {
    47   1          int16 datl;
    48   1          if(DIL == 1)
-C251 COMPILER V5.60.0,  encoder                                                            24/06/23  21:20:36  PAGE 2   
+C251 COMPILER V5.60.0,  encoder                                                            25/06/23  18:35:09  PAGE 2   
 
    49   1          {
    50   2            datl = ctimer_count_read(SPEEDL_PLUSE);
@@ -134,7 +134,7 @@ stmt  level    source
   108   1         encoder_Init();
   109   1         delay_ms(200);//200ms计数时间，也是让其完全初始化，不要删除，不然会不好使
   110   1         templ_pluse = Read_encoderL();
-C251 COMPILER V5.60.0,  encoder                                                            24/06/23  21:20:36  PAGE 3   
+C251 COMPILER V5.60.0,  encoder                                                            25/06/23  18:35:09  PAGE 3   
 
   111   1         tempr_pluse = Read_encoderR();
   112   1         OLED_ShowString(0,0,"z:",12);

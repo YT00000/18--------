@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  PID                                                                24/06/23  21:20:36  PAGE 1   
+C251 COMPILER V5.60.0,  PID                                                                25/06/23  18:35:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE PID
@@ -66,7 +66,7 @@ stmt  level    source
    55   1           PIDR->out_d =0; //Kd输出
    56   1           PIDR->out =0;   //pid输出
    57   1           PIDR->integrator =0; //积分值
-C251 COMPILER V5.60.0,  PID                                                                24/06/23  21:20:36  PAGE 2   
+C251 COMPILER V5.60.0,  PID                                                                25/06/23  18:35:09  PAGE 2   
 
    58   1           PIDR->limit =0;//积分限幅
    59   1           PIDR->error =0;      //当前偏差
@@ -134,7 +134,7 @@ stmt  level    source
   117          //       return PIDR->out ; 
   118            
   119            
-C251 COMPILER V5.60.0,  PID                                                                24/06/23  21:20:36  PAGE 3   
+C251 COMPILER V5.60.0,  PID                                                                25/06/23  18:35:09  PAGE 3   
 
   120          //}
   121          //pwm+=Kp[e（k）-e(k-1)]+Ki*e(k)+Kd[e(k)-2e(k-1)+e(k-2)]
@@ -203,7 +203,7 @@ Module Information          Static   Overlayable
   ecode size           =    ------     ------
   data size            =    ------     ------
   idata size           =    ------     ------
-C251 COMPILER V5.60.0,  PID                                                                24/06/23  21:20:36  PAGE 4   
+C251 COMPILER V5.60.0,  PID                                                                25/06/23  18:35:09  PAGE 4   
 
   pdata size           =    ------     ------
   xdata size           =    ------     ------

@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  main                                                               24/06/23  21:20:36  PAGE 1   
+C251 COMPILER V5.60.0,  main                                                               25/06/23  18:35:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE main
@@ -66,7 +66,7 @@ stmt  level    source
    53   2           delay_ms(200); //200ms输出一次采样结果，方便观察
    54   2          OLED_Refresh();
    55   2          
-C251 COMPILER V5.60.0,  main                                                               24/06/23  21:20:36  PAGE 2   
+C251 COMPILER V5.60.0,  main                                                               25/06/23  18:35:09  PAGE 2   
 
    56   2         }
    57   1       }
@@ -134,7 +134,7 @@ stmt  level    source
   118          // }
   119          
   120          
-C251 COMPILER V5.60.0,  main                                                               24/06/23  21:20:36  PAGE 3   
+C251 COMPILER V5.60.0,  main                                                               25/06/23  18:35:09  PAGE 3   
 
   121          //void main()
   122          // {

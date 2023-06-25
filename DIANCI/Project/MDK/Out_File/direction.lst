@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  direction                                                          24/06/23  21:20:37  PAGE 1   
+C251 COMPILER V5.60.0,  direction                                                          25/06/23  18:35:10  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE direction
@@ -66,7 +66,7 @@ stmt  level    source
    54   1          {
    55   2           for(i=0;i<a;i++)
    56   2           {
-C251 COMPILER V5.60.0,  direction                                                          24/06/23  21:20:37  PAGE 2   
+C251 COMPILER V5.60.0,  direction                                                          25/06/23  18:35:10  PAGE 2   
 
    57   3              for(j=0;j<a-1-i;j++)
    58   3              {
@@ -134,7 +134,7 @@ stmt  level    source
   120   1      }
   121          //开方
   122          //======================================================================
-C251 COMPILER V5.60.0,  direction                                                          24/06/23  21:20:37  PAGE 3   
+C251 COMPILER V5.60.0,  direction                                                          25/06/23  18:35:10  PAGE 3   
 
   123          //函数名称 : my_sqrt(float number)
   124          //功能描述 : 开平方算法
@@ -202,7 +202,7 @@ stmt  level    source
   186          * 描述      ：舵机角度设置
   187          * 参数      ：
   188                      angl        舵机角度（正：左转  负：右转  360 <= angl <= -400）
-C251 COMPILER V5.60.0,  direction                                                          24/06/23  21:20:37  PAGE 4   
+C251 COMPILER V5.60.0,  direction                                                          25/06/23  18:35:10  PAGE 4   
 
   189          * 返回      :void
   190          * 编写者   ：XY
@@ -271,7 +271,7 @@ Module Information          Static   Overlayable
   ebit size            =    ------     ------
   bitaddressable size  =    ------     ------
   ebitaddressable size =    ------     ------
-C251 COMPILER V5.60.0,  direction                                                          24/06/23  21:20:37  PAGE 5   
+C251 COMPILER V5.60.0,  direction                                                          25/06/23  18:35:10  PAGE 5   
 
   far data size        =    ------     ------
   huge data size       =    ------     ------

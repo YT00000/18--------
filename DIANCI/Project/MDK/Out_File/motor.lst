@@ -1,4 +1,4 @@
-C251 COMPILER V5.60.0,  motor                                                              24/06/23  21:20:36  PAGE 1   
+C251 COMPILER V5.60.0,  motor                                                              25/06/23  18:35:09  PAGE 1   
 
 
 C251 COMPILER V5.60.0, COMPILATION OF MODULE motor
@@ -66,7 +66,7 @@ stmt  level    source
    50          //此函数所得占空比和递给电机的占空比之间的比例系数为 duty_Max/(X*500)
    51          void PID_control(int32 expected_speedL,int32 expected_speedR)
    52          {
-C251 COMPILER V5.60.0,  motor                                                              24/06/23  21:20:36  PAGE 2   
+C251 COMPILER V5.60.0,  motor                                                              25/06/23  18:35:09  PAGE 2   
 
    53   1        float error_L,error_R;
    54   1      
@@ -134,7 +134,7 @@ stmt  level    source
   116          
   117          
   118          
-C251 COMPILER V5.60.0,  motor                                                              24/06/23  21:20:36  PAGE 3   
+C251 COMPILER V5.60.0,  motor                                                              25/06/23  18:35:09  PAGE 3   
 
   119          
   120          void qian(void) // P1-pwm  P2-0 P3-pwm P4-0时前转
